@@ -1,0 +1,10 @@
+export const ourTeam = "our-team"
+export const contactUs = "contact-us"
+export const home = "home"
+export const signIn = "sign-in"
+export const signUp = "sign-up"
+export const dashboard = 'dashboard'
+export const booking = 'booking'
+export const profile = 'profile'
+export const property = 'property'
+export const imagesVideos = 'ImagesVideos'
