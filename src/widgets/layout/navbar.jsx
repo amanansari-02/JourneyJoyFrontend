@@ -6,6 +6,7 @@ import {
   Collapse,
   Typography,
   IconButton,
+  Button,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../../images/logo.png"
@@ -35,7 +36,7 @@ export function Navbar({ brandName, routes, action }) {
 
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      {routes.map(({ name, path, icon, href, target, value }) => (
+      {routes.map(({ name, path, icon, href, target, value, onClick }) => (
         <Typography
           key={name}
           as="li"
@@ -56,18 +57,33 @@ export function Navbar({ brandName, routes, action }) {
               {name}
             </a>
           ) : (
-            <Link
-              to={path}
-              target={target}
-              className="flex items-center gap-1 p-1 font-bold"
-              onClick={() => onLinkClick(value)}
-            >
-              {icon &&
-                React.createElement(icon, {
-                  className: "w-[18px] h-[18px] opacity-75 mr-1",
-                })}
-              {name}
-            </Link>
+            <>
+              {onClick ? (
+                <button
+                  onClick={onClick}
+                  className="flex items-center gap-1 p-1 font-bold"
+                >
+                  {icon &&
+                    React.createElement(icon, {
+                      className: "w-[18px] h-[18px] opacity-75 mr-1",
+                    })}
+                  {name}
+                </button>
+              ) : (
+                <Link
+                  to={path}
+                  target={target}
+                  className="flex items-center gap-1 p-1 font-bold"
+                  onClick={() => onLinkClick(value)}
+                >
+                  {icon &&
+                    React.createElement(icon, {
+                      className: "w-[18px] h-[18px] opacity-75 mr-1",
+                    })}
+                  {name}
+                </Link>
+              )}
+            </>
           )}
         </Typography>
       ))}

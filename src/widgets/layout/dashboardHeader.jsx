@@ -1,37 +1,31 @@
 import React, { useState } from 'react';
 import { Navbar } from '.';
-import { Button, Card, CardBody, Input, Option, Select, Typography } from '@material-tailwind/react';
+import { Button, Card, CardBody, Input, Option, Select, Typography, Dialog, DialogHeader, DialogFooter, DialogBody }
+    from '@material-tailwind/react';
 import { Home } from '@/pages';
-import { booking, dashboard, home, profile, property } from '@/utils/route';
+import { booking, dashboard, profile, property } from '@/utils/route';
 import { useNavigate } from 'react-router-dom';
 import { DASHBOARD_TEXT_CONTENT } from '@/utils/text-content';
 
-const routes = [
-    {
-        name: "dashboard",
-        value: `${dashboard}`,
-        path: `/${dashboard}`,
-        element: <Home />
-    },
-    {
-        name: "Booking",
-        value: `${booking}`,
-        path: `/${booking}`
-    },
-    {
-        name: "Profile",
-        value: `${profile}`,
-        path: `/${profile}`
-    },
-    {
-        name: "Log Out",
-        // value: ``,
-        // path: `/`
-    }
-];
 
-const logOut = routes.filter(route => route.name === "Log Out")
-console.log(logOut);
+function ConfirmationPopup({ isOpen, onClose, onConfirm }) {
+    return (
+        <Dialog size="sm" open={isOpen} toggler={onClose}>
+            <DialogHeader toggler={onClose}>Confirm Logout</DialogHeader>
+            <DialogBody>
+                <p>Are you sure you want to log out?</p>
+            </DialogBody>
+            <DialogFooter>
+                <Button color="red" onClick={onConfirm}>
+                    Yes
+                </Button>
+                <Button color="blue" onClick={onClose} ripple="light">
+                    No
+                </Button>
+            </DialogFooter>
+        </Dialog>
+    );
+};
 
 function DashboardHeader({ locationVal, priceVal }) {
     const [location, setLocation] = useState(locationVal);
@@ -43,6 +37,37 @@ function DashboardHeader({ locationVal, priceVal }) {
         localStorage.removeItem("user")
         navigate('/sign-in')
     }
+
+    const openLogoutPopup = () => {
+        console.log('openLogoutPopup triggered'); // Debugging log
+        setLogoutPopup(true);
+    };
+    const closeLogoutPopup = () => setLogoutPopup(false);
+
+    const routes = [
+        {
+            name: "dashboard",
+            value: `${dashboard}`,
+            path: `/${dashboard}`,
+            element: <Home />
+        },
+        {
+            name: "Booking",
+            value: `${booking}`,
+            path: `/${booking}`
+        },
+        {
+            name: "Profile",
+            value: `${profile}`,
+            path: `/${profile}`
+        },
+        {
+            name: "Log Out",
+            onClick: openLogoutPopup
+            // value: ``,
+            // path: `/`
+        }
+    ];
 
     const navigateToSearchHotels = () => {
         const searchDataPage = `/${property}`;
@@ -124,6 +149,14 @@ function DashboardHeader({ locationVal, priceVal }) {
                     </div>
                 </section>
             </div>
+            <ConfirmationPopup
+                isOpen={logoutPopup}
+                onClose={closeLogoutPopup}
+                onConfirm={() => {
+                    handleLogout();
+                    closeLogoutPopup();
+                }}
+            />
         </div>
     );
 }
