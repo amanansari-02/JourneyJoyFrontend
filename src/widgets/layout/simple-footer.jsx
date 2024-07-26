@@ -10,15 +10,7 @@ export function SimpleFooter({ brandName, brandLink, routes }) {
       <div className="flex w-full flex-wrap items-center justify-center gap-6 px-2 md:justify-between">
         <Typography variant="small" className="font-normal text-inherit">
           &copy; {year}, made with{" "}
-          <HeartIcon className="-mt-0.5 inline-block h-3.5 w-3.5" /> by{" "}
-          <a
-            href={brandLink}
-            target="_blank"
-            className="transition-colors hover:text-blue-500"
-          >
-            {brandName}
-          </a>{" "}
-          for a better web.
+          <HeartIcon className="-mt-0.5 inline-block h-3.5 w-3.5 text-red-400" /> by JourneyJoy
         </Typography>
         <ul className="flex items-center gap-4">
           {routes.map(({ name, path }) => (
@@ -41,13 +33,11 @@ export function SimpleFooter({ brandName, brandLink, routes }) {
 }
 
 SimpleFooter.defaultProps = {
-  brandName: "Creative Tim",
-  brandLink: "https://www.creative-tim.com",
+  brandLink: "/",
   routes: [
-    { name: "Creative Tim", path: "https://www.creative-tim.com" },
-    { name: "About Us", path: "https://www.creative-tim.com/presentation" },
-    { name: "Blog", path: "https://www.creative-tim.com/blog" },
-    { name: "License", path: "https://www.creative-tim.com/license" },
+    { name: "About Us", path: "/" },
+    { name: "Our Team", path: "/" },
+    { name: "Contact Us", path: "/" },
   ],
 };
 
