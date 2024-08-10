@@ -6,11 +6,11 @@ import {
   Collapse,
   Typography,
   IconButton,
-  Button,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../../images/logo.png"
 import linkName from "../../components/common/homeNavigate"
+import "../../../public/css/index.css"
 
 export function Navbar({ brandName, routes, action }) {
   const [openNav, setOpenNav] = useState(false);
@@ -40,9 +40,9 @@ export function Navbar({ brandName, routes, action }) {
         <Typography
           key={name}
           as="li"
-          variant="small"
+          variant="medium"
           color="inherit"
-          className="capitalize"
+          className="capitalize headerLink"
         >
           {href ? (
             <a

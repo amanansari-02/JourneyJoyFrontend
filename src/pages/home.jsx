@@ -158,7 +158,7 @@ export function Home() {
           </div>
         </div>
       </section>
-      <section className="relative bg-white py-24 px-4">
+      <section className="relative bg-white py-12 px-4">
         <div className="container mx-auto">
           <PageTitle section="Co-Working" heading="Inspire Innovation">
             {HOME_TEXT_CONTENT.CO_WORKING.TEXT_1}
