@@ -15,8 +15,39 @@ import { FeatureCard, TeamCard } from "@/widgets/cards";
 import { featuresData, teamData, contactData } from "@/data";
 import { contactUs, ourTeam } from "@/utils/route";
 import { DASHBOARD_TEXT_CONTENT, HOME_TEXT_CONTENT } from "@/utils/text-content";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import AuthServices from "@/services/AuthServices";
+import { HttpStatusCode } from "axios";
+
+const contactSchema = z.object({
+  FullName: z.string().min(1, "Name is required"),
+  Email: z.string().min(1, "Email is required").email("Invalid email address"),
+  Message: z.string().nullable()
+})
 
 export function Home() {
+
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(contactSchema)
+  })
+
+  const onSubmit = async (data) => {
+    try {
+      const contactUs = await AuthServices.contactUsForm(data)
+      if (contactUs?.data?.status == HttpStatusCode.Ok) {
+
+      } else {
+
+      }
+
+    } catch (err) {
+      console.error("Err", err);
+
+    }
+  }
+
   return (
     <>
       <div className="relative flex h-screen content-center items-center justify-center pt-16 pb-32">
@@ -158,13 +189,19 @@ export function Home() {
             <PageTitle section="Contact Us" heading="Get in Touch">
               {HOME_TEXT_CONTENT.CONTACT_US.TEXT_1}
             </PageTitle>
-            <form className="mx-auto w-5/6 max-w-lg mt-12 lg:w-5/12">
+            <form className="mx-auto w-5/6 max-w-lg mt-12 lg:w-5/12" onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-8 flex flex-col md:flex-row gap-8">
-                <Input variant="outlined" size="md" label="Full Name" />
-                <Input variant="outlined" size="md" label="Email Address" />
+                <div className="flex flex-col w-full md:w-1/2">
+                  <Input variant="outlined" size="md" label="Full Name" {...register('FullName')} />
+                  {errors.fullName && <p className="text-red-600">{errors.fullName.message}</p>}
+                </div>
+                <div className="flex flex-col w-full md:w-1/2">
+                  <Input variant="outlined" size="md" label="Email Address" {...register('Email')} />
+                  {errors.email && <p className="text-red-600">{errors.email.message}</p>}
+                </div>
               </div>
-              <Textarea variant="outlined" size="lg" label="Message" rows={8} />
-              <Button variant="gradient" size="lg" className="mt-8" fullWidth>
+              <Textarea variant="outlined" size="lg" label="Message" rows={8} {...register('Message')} />
+              <Button variant="gradient" size="lg" className="mt-8" fullWidth type="submit">
                 {HOME_TEXT_CONTENT.BUTTON_1}
               </Button>
             </form>

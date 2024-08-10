@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from "zod";
 import AuthServices from "@/services/AuthServices";
 import { HttpStatusCode } from "axios";
+import { showToast } from "@/utils/common-service";
 
 const schema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -31,11 +32,10 @@ export function SignIn() {
       const res = await AuthServices.userLogin(data);
       const userData = JSON.stringify(res.data.data)
       if (res.data.status == HttpStatusCode.Ok) {
-        console.log("user", userData);
         localStorage.setItem('user', userData)
         navigate(dasboardPath)
+        showToast('SUCCESS', res.data.message)
       }
-
     } catch (error) {
       console.log("err", error);
     }
