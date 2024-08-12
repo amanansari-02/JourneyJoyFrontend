@@ -103,7 +103,7 @@ export function Home() {
                 <br />
                 {HOME_TEXT_CONTENT.TEXT_3}
               </Typography>
-              <Button variant="filled">{HOME_TEXT_CONTENT.BUTTON_2}</Button>
+              <Button variant="filled" className="btnStyle">{HOME_TEXT_CONTENT.BUTTON_2}</Button>
             </div>
             <div className="mx-auto mt-24 flex w-full justify-center px-4 md:w-4/12 lg:mt-0">
               <Card className="shadow-lg border shadow-gray-500/10 rounded-lg">
@@ -201,7 +201,7 @@ export function Home() {
                 </div>
               </div>
               <Textarea variant="outlined" size="lg" label="Message" rows={8} {...register('Message')} />
-              <Button variant="gradient" size="lg" className="mt-8" fullWidth type="submit">
+              <Button variant="gradient" size="lg" className="mt-8 " fullWidth type="submit">
                 {HOME_TEXT_CONTENT.BUTTON_1}
               </Button>
             </form>

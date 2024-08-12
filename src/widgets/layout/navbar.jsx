@@ -102,13 +102,15 @@ export function Navbar({ brandName, routes, action }) {
           size="sm"
           color="white"
           className="ml-auto text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-          onClick={() => setOpenNav(!openNav)}
         >
-          {openNav ? (
-            <XMarkIcon strokeWidth={2} className="h-6 w-6" />
-          ) : (
-            <Bars3Icon strokeWidth={2} className="h-6 w-6" />
-          )}
+          <label className="burger text-md" for="burger"
+          >
+            <input type="checkbox" id="burger" onClick={() => setOpenNav(!openNav)} />
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+
         </IconButton>
       </div>
       <Collapse
