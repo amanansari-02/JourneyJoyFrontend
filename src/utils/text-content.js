@@ -27,3 +27,7 @@ export const HOME_TEXT_CONTENT = {
     BUTTON_1: "Send Message",
     BUTTON_2: "read more",
 }
+
+export const CONST_MSG = {
+    INTERNAL_SERVER_ERROR: "Internal server error"
+}

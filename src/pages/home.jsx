@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardBody,
@@ -14,12 +14,14 @@ import { PageTitle, Footer } from "@/widgets/layout";
 import { FeatureCard, TeamCard } from "@/widgets/cards";
 import { featuresData, teamData, contactData } from "@/data";
 import { contactUs, ourTeam } from "@/utils/route";
-import { DASHBOARD_TEXT_CONTENT, HOME_TEXT_CONTENT } from "@/utils/text-content";
+import { CONST_MSG, DASHBOARD_TEXT_CONTENT, HOME_TEXT_CONTENT } from "@/utils/text-content";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AuthServices from "@/services/AuthServices";
 import { HttpStatusCode } from "axios";
+import { showToast } from "@/utils/common-service";
+import { BeatLoader } from "react-spinners";
 
 const contactSchema = z.object({
   FullName: z.string().min(1, "Name is required"),
@@ -29,22 +31,27 @@ const contactSchema = z.object({
 
 export function Home() {
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const [enquiryLoader, setEnquiryLoader] = useState(false)
+
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: zodResolver(contactSchema)
   })
 
   const onSubmit = async (data) => {
     try {
+      setEnquiryLoader(true)
       const contactUs = await AuthServices.contactUsForm(data)
       if (contactUs?.data?.status == HttpStatusCode.Ok) {
-
+        reset();
+        showToast('SUCCESS', contactUs?.data?.message)
       } else {
-
+        showToast('FAILURE', CONST_MSG.INTERNAL_SERVER_ERROR)
       }
 
     } catch (err) {
       console.error("Err", err);
-
+    } finally {
+      setEnquiryLoader(false)
     }
   }
 
@@ -193,16 +200,16 @@ export function Home() {
               <div className="mb-8 flex flex-col md:flex-row gap-8">
                 <div className="flex flex-col w-full md:w-1/2">
                   <Input variant="outlined" size="md" label="Full Name" {...register('FullName')} />
-                  {errors.fullName && <p className="text-red-600">{errors.fullName.message}</p>}
+                  {errors.FullName && <p className="text-red-600">{errors.FullName.message}</p>}
                 </div>
                 <div className="flex flex-col w-full md:w-1/2">
                   <Input variant="outlined" size="md" label="Email Address" {...register('Email')} />
-                  {errors.email && <p className="text-red-600">{errors.email.message}</p>}
+                  {errors.Email && <p className="text-red-600">{errors.Email.message}</p>}
                 </div>
               </div>
               <Textarea variant="outlined" size="lg" label="Message" rows={8} {...register('Message')} />
               <Button variant="gradient" size="lg" className="mt-8" fullWidth type="submit">
-                {HOME_TEXT_CONTENT.BUTTON_1}
+                {enquiryLoader ? <BeatLoader /> : HOME_TEXT_CONTENT.BUTTON_1}
               </Button>
             </form>
           </section>

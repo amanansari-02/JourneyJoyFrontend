@@ -5,9 +5,10 @@ import {
     SimpleFooter,
 } from "@/widgets/layout";
 import { useMaterialTailwindController } from "@/context";
-import { HomeIcon, InformationCircleIcon, TableCellsIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { BookmarkIcon, BookOpenIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, HomeIcon, InformationCircleIcon, TableCellsIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { Profile } from "@/pages";
 import Home from "@/pages/dashboard/Home"
+import Booking from "./booking";
 
 export function AdminDashboard() {
 
@@ -35,6 +36,12 @@ export function AdminDashboard() {
                     name: "tables",
                     path: "/tables",
                     element: <Profile />,
+                },
+                {
+                    icon: <BuildingStorefrontIcon {...icon} />,
+                    name: "booking",
+                    path: "/booking",
+                    element: <Booking />,
                 },
                 {
                     icon: <InformationCircleIcon {...icon} />,
