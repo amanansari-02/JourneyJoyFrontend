@@ -27,12 +27,12 @@ function App() {
             element && <Route key={key} exact path={path} element={element} />
         )}
         <Route path={`/${signUp}`} element={<SignUp />} />
-        <Route path={`/${dashboard}`} element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path={`/${profile}`} element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-        <Route path={`/${property}`} element={<ProtectedRoute><Property /></ProtectedRoute>} />
-        <Route path={`/${propertyById}`} element={<ProtectedRoute><SingleProperty /></ProtectedRoute>} />
-        <Route path={`/${imagesVideosById}`} element={<ProtectedRoute><ImagesVideos /></ProtectedRoute>} />
-        <Route path={`/${adminDashboard}`} element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+        <Route path={`/${dashboard}`} element={<Dashboard />} />
+        <Route path={`/${profile}`} element={<Profile />} />
+        <Route path={`/${property}`} element={<Property />} />
+        <Route path={`/${propertyById}`} element={<SingleProperty />} />
+        <Route path={`/${imagesVideosById}`} element={<ImagesVideos />} />
+        <Route path={`/${adminDashboard}`} element={<AdminDashboard />} />
         <Route path={`/admin-dashboard/*`} element={<AdminDashboard />} />
         <Route path="*" element={<Navigate to={`/${home}`} replace />} />
       </Routes>

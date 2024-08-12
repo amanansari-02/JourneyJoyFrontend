@@ -142,12 +142,13 @@ function Dashboard() {
                 </Typography>
                 <Typography
                     variant="h1"
-                    className="text-5xl md:text-9xl text-transparent bg-clip-text bg-cover bg-center"
+                    className="text-5xl md:text-9xl text-transparent bg-clip-text bg-cover bg-center font-extrabold"
                     style={{
                         backgroundImage: `url('https://images.pexels.com/photos/33109/fall-autumn-red-season.jpg?auto=compress&cs=tinysrgb&w=600?auto=compress&cs=tinysrgb&w=1200')`,
                         backgroundSize: 'cover',
                         WebkitTextFillColor: 'transparent',
-                        textAlign: 'center', // Center align the text
+                        backgroundAttachment: 'fixed', // Fixed background
+                        textAlign: 'center',
                     }}
                 >
                     ADVENTURE
@@ -156,13 +157,15 @@ function Dashboard() {
 
             {/* Style 1 Section */}
             <Card
-                className="bg-cover bg-center h-96 m-4"
+                className="bg-cover bg-center h-96 m-4 relative"
                 style={{
                     backgroundImage: `url('https://images.pexels.com/photos/1683724/pexels-photo-1683724.jpeg?auto=compress&cs=tinysrgb&w=1200')`,
                     backgroundPosition: 'center',
                 }}
             >
-                <div className="flex flex-col justify-center items-center h-full text-center">
+                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-xl"></div>
+
+                <div className="flex flex-col justify-center items-center h-full text-center relative">
                     <Typography variant="h1" className="text-4xl text-white mb-4 sm:text-6xl">
                         Ready to Explore?
                     </Typography>
