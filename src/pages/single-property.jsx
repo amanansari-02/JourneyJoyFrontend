@@ -135,6 +135,7 @@ function SingleProperty() {
                 </div>
                 <div className="relative">
                     <Swiper
+                        loop={true}
                         modules={[Navigation, Pagination]}
                         navigation={{
                             nextEl: '.swiper-button-next-ex5',
