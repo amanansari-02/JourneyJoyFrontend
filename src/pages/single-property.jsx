@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
 import { imagesVideos } from '@/utils/route';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -136,7 +136,11 @@ function SingleProperty() {
                 <div className="relative">
                     <Swiper
                         loop={true}
-                        modules={[Navigation, Pagination]}
+                        autoplay={{
+                            delay: 2000,
+                            disableOnInteraction: false,
+                        }}
+                        modules={[Navigation, Pagination, Autoplay]}
                         navigation={{
                             nextEl: '.swiper-button-next-ex5',
                             prevEl: '.swiper-button-prev-ex5',
