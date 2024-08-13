@@ -28,3 +28,11 @@ export const showToast = (toastType, title) => {
         }
     });
 }
+
+export const setItemToLocalStorage = (column, value) => {
+    localStorage.setItem(column, value)
+}
+
+export const removeItemToLocalStorage = (column) => {
+    localStorage.removeItem(column)
+}

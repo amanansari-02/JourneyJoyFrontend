@@ -1,4 +1,4 @@
-import { dashboard, signUp } from "../utils/route";
+import { dashboard, forgotPassword, signUp } from "../utils/route";
 import {
   Input,
   Button,
@@ -26,8 +26,6 @@ export function SignIn() {
       .then((result) => {
         const user = result.user;
         console.log("User Info:", user);
-        const profileImageUrl = user.photoURL;
-        console.log("User's Profile Image URL:", profileImageUrl);
       })
       .catch((error) => {
         console.error("Error during sign up:", error);
@@ -36,8 +34,6 @@ export function SignIn() {
 
 
   const navigate = useNavigate();
-  const signUpPath = `/${signUp}`;
-  const dasboardPath = `/${dashboard}`;
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(schema)
@@ -48,8 +44,8 @@ export function SignIn() {
       const res = await AuthServices.userLogin(data);
       const userData = JSON.stringify(res.data.data)
       if (res.data.status == HttpStatusCode.Ok) {
-        localStorage.setItem('user', userData)
-        navigate(dasboardPath)
+        setItemToLocalStorage('user', userData)
+        navigate(dashboard)
         showToast('SUCCESS', res.data.message)
       }
     } catch (error) {
@@ -100,9 +96,7 @@ export function SignIn() {
 
           <div className="flex items-center justify-between gap-2 mt-6">
             <Typography variant="small" className="font-medium text-gray-900">
-              <a href="#">
-                Forgot Password
-              </a>
+              <Link to={forgotPassword} className="text-gray-900 ml-1">Forgot Password</Link>
             </Typography>
           </div>
           <div className="space-y-4 mt-8">
@@ -125,7 +119,7 @@ export function SignIn() {
           </div>
           <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
             Not registered?
-            <Link to={signUpPath} className="text-gray-900 ml-1">Create account</Link>
+            <Link to={signUp} className="text-gray-900 ml-1">Create account</Link>
           </Typography>
         </form>
 

@@ -5,23 +5,23 @@ export const routes = [
   {
     name: "home",
     value: `${home}`,
-    path: `/${home}`,
+    path: `${home}`,
     element: <Home />
   },
   {
     name: "Our team",
     value: `${ourTeam}`,
-    path: `/${home}#${ourTeam}`
+    path: `${home}#${ourTeam}`
   },
   {
     name: "Contact Us",
     value: `${contactUs}`,
-    path: `/${home}#${contactUs}`
+    path: `${home}#${contactUs}`
   },
   {
     name: "Log In",
     value: `${signIn}`,
-    path: `/${signIn}`,
+    path: `${signIn}`,
     element: <SignIn />
   }
 ];

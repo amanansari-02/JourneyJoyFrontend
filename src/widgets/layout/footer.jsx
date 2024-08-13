@@ -47,7 +47,7 @@ export function Footer({ title, description, socials, menus, copyright }) {
                     <li key={item.name}>
                       <Typography
                         as="a"
-                        href={item.path}
+                        // href={item.path}
                         target="_blank"
                         rel="noreferrer"
                         variant="small"
@@ -84,11 +84,6 @@ Footer.defaultProps = {
     "Your gateway to unforgettable adventures. Explore, discover, and embark on exciting journeys with us.",
   socials: [
     {
-      color: "blue",
-      name: "twitter",
-      path: "/",
-    },
-    {
       color: "red",
       name: "youtube",
       path: "/",
@@ -98,41 +93,33 @@ Footer.defaultProps = {
       name: "instagram",
       path: "/",
     },
-    // {
-    //   color: "black",
-    //   name: "github",
-    //   path: "/",
-    // },
+    {
+      color: "black",
+      name: "github",
+      path: "https://github.com/amanansari-02",
+    },
   ],
   menus: [
     {
-      name: "useful links",
+      name: "PUNE",
       items: [
-        { name: "About Us", path: "/" },
-        { name: "Blog", path: "/" },
-        {
-          name: "Free Products",
-          path: "/",
-        },
+        { name: "+9156033705", path: "/" },
+        { name: "204 floor, Abc Building, Unknown road", path: "" },
       ],
     },
     {
-      name: "other resources",
+      name: "CONNECT",
       items: [
         {
-          name: "MIT License",
-          path: "/",
-        },
-        {
-          name: "Contribute",
-          path: "/",
-        },
-        {
-          name: "Change Log",
-          path: "/",
-        },
-        {
           name: "Contact Us",
+          path: "/",
+        },
+        {
+          name: "FAQ",
+          path: "/",
+        },
+        {
+          name: "Privacy policy",
           path: "/",
         },
       ],
@@ -142,11 +129,11 @@ Footer.defaultProps = {
     <>
       Copyright © 2024 JourneyJoy{" "}
       <a
-        href="https://www.creative-tim.com?ref=mtk"
+        href=""
         target="_blank"
         className="text-blue-gray-500 transition-colors hover:text-blue-500"
       >
-        Creative Aman
+        Aman
       </a>
       .
     </>
