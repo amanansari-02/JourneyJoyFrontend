@@ -6,6 +6,7 @@ import { Home } from '@/pages';
 import { booking, dashboard, profile, property, signIn } from '@/utils/route';
 import { useNavigate } from 'react-router-dom';
 import { DASHBOARD_TEXT_CONTENT } from '@/utils/text-content';
+import { removeItemToLocalStorage } from '@/utils/common-service';
 
 
 function ConfirmationPopup({ isOpen, onClose, onConfirm }) {

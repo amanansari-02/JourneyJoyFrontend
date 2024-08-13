@@ -10,22 +10,43 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from "zod";
 import AuthServices from "@/services/AuthServices";
 import { HttpStatusCode } from "axios";
-import { showToast } from "@/utils/common-service";
+import { setItemToLocalStorage, showToast } from "@/utils/common-service";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "@/utils/firebase";
 
 const schema = z.object({
-  email: z.string().min(1, "Email is required").email("Invalid email address"),
-  password: z.string().min(1, "Password is required")
+  Email: z.string().min(1, "Email is required").email("Invalid email address"),
+  Password: z.string().min(1, "Password is required")
 })
 
 export function SignIn() {
 
   const handleGoogleSignUp = () => {
     signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async (result) => {
         const user = result.user;
-        console.log("User Info:", user);
+
+        const userData = {
+          Email: user?.email || '',
+          IsEmailLogin: 1,
+          Name: user?.displayName || '',
+          PhoneNo: user?.phoneNumber || '',
+          ProfilePhoto: user?.photoURL || '',
+        }
+        console.log("User Info:", userData);
+        const formData = new FormData()
+        for (const key in userData) {
+          formData.append(key, userData[key])
+        }
+        const res = await AuthServices.userLogin(formData);
+        console.log("res", res);
+
+        const data = JSON.stringify(res.data.data)
+        if (res.data.status == HttpStatusCode.Ok) {
+          setItemToLocalStorage('user', data)
+          navigate(dashboard)
+          showToast('SUCCESS', res.data.message)
+        }
       })
       .catch((error) => {
         console.error("Error during sign up:", error);
@@ -41,12 +62,22 @@ export function SignIn() {
 
   const onSubmit = async (data) => {
     try {
-      const res = await AuthServices.userLogin(data);
+      const allData = {
+        ...data,
+        IsEmailLogin: 2
+      }
+      const formData = new FormData()
+      for (const key in allData) {
+        formData.append(key, allData[key])
+      }
+      const res = await AuthServices.userLogin(formData);
       const userData = JSON.stringify(res.data.data)
       if (res.data.status == HttpStatusCode.Ok) {
         setItemToLocalStorage('user', userData)
         navigate(dashboard)
         showToast('SUCCESS', res.data.message)
+      } else {
+        showToast('FAILURE', "Internal server error")
       }
     } catch (error) {
       console.log("err", error);
@@ -72,9 +103,9 @@ export function SignIn() {
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
-              {...register('email')}
+              {...register('Email')}
             />
-            {errors.email && <p className="text-red-600 ">{errors.email.message}</p>}
+            {errors.Email && <p className="text-red-600 ">{errors.Email.message}</p>}
             <Typography variant="small" color="blue-gray" className="mb-2 font-medium">
               Password
             </Typography>
@@ -86,9 +117,9 @@ export function SignIn() {
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
-              {...register('password')}
+              {...register('Password')}
             />
-            {errors.password && <p className="text-red-600">{errors.password.message}</p>}
+            {errors.Password && <p className="text-red-600">{errors.Password.message}</p>}
           </div>
           <Button className="mt-6" fullWidth type="submit">
             Sign In
