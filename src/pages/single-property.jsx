@@ -4,11 +4,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
 import { imagesVideos } from '@/utils/route';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWifi, faCoffee, faUser, faSwimmingPool, faGamepad, faTv, faSpa, faUtensils } from '@fortawesome/free-solid-svg-icons';
+import { faWifi, faCoffee, faUser, faSwimmingPool, faGamepad, faTv, faUtensils } from '@fortawesome/free-solid-svg-icons';
 
 
 function SingleProperty() {
@@ -35,7 +35,7 @@ function SingleProperty() {
     const slideHeight = '250px';
 
     function viewImages() {
-        const imagesVideo = `/${imagesVideos}/1`
+        const imagesVideo = `${imagesVideos}/1`
         navigate(imagesVideo)
     }
 

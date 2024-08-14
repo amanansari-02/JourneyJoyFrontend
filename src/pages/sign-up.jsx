@@ -1,33 +1,60 @@
+import UserService from "@/services/UserService";
+import { setItemToLocalStorage, showToast } from "@/utils/common-service";
+import { signIn } from "@/utils/route";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Input,
   Button,
   Typography,
 } from "@material-tailwind/react";
+import { HttpStatusCode } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as z from "zod";
 
 export function SignUp() {
-
+  const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null)
   const [dragging, setDragging] = useState(false);
 
   const schema = z.object({
-    name: z.string().min(4, "Name is required"),
-    email: z.string().min(1, "Email is required").email("Invalid email address"),
-    password: z.string().min(1, "Password is required"),
-    mobileNo: z.string().min(10, "Invalid mobile number"),
-    profilePhoto: z.any().optional()
+    Name: z.string().min(4, "Name is required"),
+    Email: z.string().min(1, "Email is required").email("Invalid email address"),
+    Password: z.string().min(1, "Password is required"),
+    PhoneNo: z.string().min(10, "Invalid mobile number"),
+    ProfilePhoto: z.any().optional()
   })
 
   const { register, handleSubmit, formState: { errors }, setValue } = useForm({
     resolver: zodResolver(schema)
   })
 
-  const onSubmit = (data) => {
-    console.log("data", data);
+  const onSubmit = async (data) => {
+    try {
+      const allData = {
+        ...data,
+        IsEmailLogin: 2,
+      }
+      const formData = new FormData()
+      for (const key in allData) {
+        formData.append(key, allData[key])
+      }
+      const res = await UserService.userCreate(formData)
+      if (res?.data?.status == HttpStatusCode.Created) {
+        setItemToLocalStorage('user', formData)
+        navigate(signIn)
+        showToast('SUCCESS', res.data.message)
+      } else if (res?.data?.status == HttpStatusCode.BadRequest) {
+        showToast('FAILURE', res.data.error)
+      } else {
+        showToast('FAILURE', "User not added")
+      }
+      console.log("res", res);
+
+    } catch (err) {
+      console.error("error: ", err)
+    }
   }
 
   const handleImageChange = (event) => {
@@ -40,7 +67,7 @@ export function SignUp() {
 
     if (imageFile) {
       setSelectedImage(imageFile);
-      setValue("profilePhoto", imageFile)
+      setValue("ProfilePhoto", imageFile)
     }
   };
 
@@ -110,9 +137,9 @@ export function SignUp() {
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
-              {...register('name')}
+              {...register('Name')}
             />
-            {errors.name && <p className="text-red-600">{errors.name.message}</p>}
+            {errors.Name && <p className="text-red-600">{errors.Name.message}</p>}
           </div>
           <div className="mb-1 flex flex-col gap-3">
             <Typography variant="small" color="blue-gray" className="mt-2 font-medium">
@@ -125,9 +152,9 @@ export function SignUp() {
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
-              {...register('email')}
+              {...register('Email')}
             />
-            {errors.email && <p className="text-red-600">{errors.email.message}</p>}
+            {errors.Email && <p className="text-red-600">{errors.Email.message}</p>}
           </div>
           <div className="mb-1 flex flex-col gap-3">
             <Typography variant="small" color="blue-gray" className="mt-2 font-medium">
@@ -141,9 +168,9 @@ export function SignUp() {
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
-              {...register('password')}
+              {...register('Password')}
             />
-            {errors.password && <p className="text-red-600">{errors.password.message}</p>}
+            {errors.Password && <p className="text-red-600">{errors.Password.message}</p>}
           </div>
           <div className="mb-1 flex flex-col gap-3">
             <Typography variant="small" color="blue-gray" className="mt-2 font-medium">
@@ -157,16 +184,14 @@ export function SignUp() {
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
-              {...register('mobileNo')}
+              {...register('PhoneNo')}
             />
-            {errors.mobileNo && <p className="text-red-600">{errors.mobileNo.message}</p>}
+            {errors.PhoneNo && <p className="text-red-600">{errors.PhoneNo.message}</p>}
           </div>
 
           <Button className="mt-6" fullWidth type="submit">
             Register Now
           </Button>
-
-
           <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
             Already have an account?
             <Link to="/sign-in" className="text-gray-900 ml-1">Sign in</Link>

@@ -12,7 +12,7 @@ function Property() {
     const priceRangeValue = location?.state?.priceRange || ''
 
     const SendSingleProperty = () => {
-        const singleprop = `/${property}/1`
+        const singleprop = `${property}/1`
         navigate(singleprop)
     }
 

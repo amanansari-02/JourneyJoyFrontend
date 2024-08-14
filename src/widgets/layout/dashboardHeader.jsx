@@ -3,9 +3,10 @@ import { Navbar } from '.';
 import { Button, Card, CardBody, Input, Option, Select, Typography, Dialog, DialogHeader, DialogFooter, DialogBody }
     from '@material-tailwind/react';
 import { Home } from '@/pages';
-import { booking, dashboard, profile, property } from '@/utils/route';
+import { booking, dashboard, profile, property, signIn } from '@/utils/route';
 import { useNavigate } from 'react-router-dom';
 import { DASHBOARD_TEXT_CONTENT } from '@/utils/text-content';
+import { removeItemToLocalStorage } from '@/utils/common-service';
 
 
 function ConfirmationPopup({ isOpen, onClose, onConfirm }) {
@@ -16,11 +17,16 @@ function ConfirmationPopup({ isOpen, onClose, onConfirm }) {
                 <p>Are you sure you want to log out?</p>
             </DialogBody>
             <DialogFooter>
-                <Button color="red" onClick={onConfirm}>
-                    Yes
+                <Button
+                    variant="text"
+                    color="red"
+                    onClick={onClose}
+                    className="mr-1"
+                >
+                    <span>Cancel</span>
                 </Button>
-                <Button color="blue" onClick={onClose} ripple="light">
-                    No
+                <Button variant="gradient" color="green" onClick={onConfirm}>
+                    <span>Confirm</span>
                 </Button>
             </DialogFooter>
         </Dialog>
@@ -34,12 +40,11 @@ function DashboardHeader({ locationVal, priceVal }) {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.removeItem("user")
-        navigate('/sign-in')
+        removeItemToLocalStorage("user")
+        navigate(signIn)
     }
 
     const openLogoutPopup = () => {
-        console.log('openLogoutPopup triggered'); // Debugging log
         setLogoutPopup(true);
     };
     const closeLogoutPopup = () => setLogoutPopup(false);
@@ -64,8 +69,6 @@ function DashboardHeader({ locationVal, priceVal }) {
         {
             name: "Log Out",
             onClick: openLogoutPopup
-            // value: ``,
-            // path: `/`
         }
     ];
 

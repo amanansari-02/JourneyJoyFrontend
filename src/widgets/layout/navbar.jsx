@@ -40,7 +40,7 @@ export function Navbar({ brandName, routes, action }) {
         <Typography
           key={name}
           as="li"
-          variant="medium"
+          variant="paragraph"
           color="inherit"
           className="capitalize headerLink"
         >
