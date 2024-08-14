@@ -103,7 +103,7 @@ export function Navbar({ brandName, routes, action }) {
           color="white"
           className="ml-auto text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
         >
-          <label className="burger text-md" for="burger"
+          <label className="burger text-md" htmlFor="burger"
           >
             <input type="checkbox" id="burger" onClick={() => setOpenNav(!openNav)} />
             <span></span>
