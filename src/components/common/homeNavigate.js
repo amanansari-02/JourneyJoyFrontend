@@ -1,6 +1,6 @@
 const linkName = [
-    "our-team",
-    "contact-us"
+    "/our-team",
+    "/contact-us"
 ]
 
 export default linkName;

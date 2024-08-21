@@ -73,7 +73,7 @@ function DashboardHeader({ locationVal, priceVal }) {
     ];
 
     const navigateToSearchHotels = () => {
-        const searchDataPage = `/${property}`;
+        const searchDataPage = `${property}`;
         navigate(searchDataPage, { state: { location, priceRange } });
     };
 

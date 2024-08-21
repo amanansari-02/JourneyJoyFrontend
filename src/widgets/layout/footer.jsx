@@ -91,7 +91,7 @@ Footer.defaultProps = {
     {
       color: "pink",
       name: "instagram",
-      path: "/",
+      path: "https://www.instagram.com/aman__ansari__11",
     },
     {
       color: "black",
@@ -133,7 +133,7 @@ Footer.defaultProps = {
         target="_blank"
         className="text-blue-gray-500 transition-colors hover:text-blue-500"
       >
-        Aman
+        created by Aman
       </a>
       .
     </>
