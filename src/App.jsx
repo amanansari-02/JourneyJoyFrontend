@@ -11,7 +11,7 @@ import ImagesVideos from "./pages/images-videos";
 import ProtectedRoute from "./widgets/layout/protected-routes";
 import AdminDashboard from "./pages/admin-dashboard";
 import ForgotPassword from "./pages/forgot-password";
-import BookingForm from "./pages/booking-form";
+import PropertyForm from "./pages/property-form";
 
 function App() {
   const { pathname } = useLocation();

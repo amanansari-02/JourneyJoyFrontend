@@ -1,9 +1,9 @@
-import { Avatar, Button, Card, CardBody, CardHeader, Chip, Typography } from '@material-tailwind/react'
+import { Avatar, Button, Card, CardBody, CardHeader, Chip, IconButton, Menu, MenuHandler, MenuItem, MenuList, Typography } from '@material-tailwind/react'
 import React from 'react'
 import { authorsTableData } from "@/data";
-import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
+import { EllipsisVerticalIcon, EyeIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
+import { ArchiveBoxIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Link, useNavigate } from 'react-router-dom';
-import { bookingForm } from '@/utils/route';
 
 function Booking() {
     const navigate = useNavigate();
@@ -90,13 +90,36 @@ function Booking() {
                                                     </Typography>
                                                 </td>
                                                 <td className={className}>
-                                                    <Typography
+                                                    {/* <Typography
                                                         as="a"
                                                         href="#"
                                                         className="text-xs font-semibold text-blue-gray-600"
-                                                    >
-                                                        <EllipsisVerticalIcon />
-                                                    </Typography>
+                                                    > */}
+                                                    <Menu>
+                                                        <MenuHandler>
+                                                            <IconButton
+                                                                variant="text"
+                                                                color="blue-gray"
+                                                                className='w-8 h-8'
+                                                            >
+                                                                <EllipsisVerticalIcon className="h-6 w-6 text-blue-gray-500" />
+                                                            </IconButton>
+                                                        </MenuHandler>
+                                                        <MenuList className='w-[10%]'>
+                                                            <MenuItem className="flex items-center gap-2">
+                                                                <p><EyeIcon className='h-5 w-5' /></p>
+                                                                <p>View</p>
+                                                            </MenuItem>
+                                                            <MenuItem className="flex items-center gap-2">
+                                                                <p><PencilSquareIcon className='h-5 w-5' /></p>
+                                                                <p>Edit</p>
+                                                            </MenuItem>
+                                                            <MenuItem className="flex items-center gap-2">
+                                                                <p><TrashIcon className='h-5 w-5' /></p>
+                                                                <p>Delete</p>
+                                                            </MenuItem>
+                                                        </MenuList>
+                                                    </Menu>
                                                 </td>
                                             </tr>
                                         );

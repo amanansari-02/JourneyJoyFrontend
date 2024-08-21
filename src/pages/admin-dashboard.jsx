@@ -9,7 +9,7 @@ import { BuildingStorefrontIcon, HomeIcon, InformationCircleIcon, TableCellsIcon
 import { Profile } from "@/pages";
 import Home from "@/pages/dashboard/Home"
 import Booking from "./booking";
-import BookingForm from "./booking-form";
+import PropertyForm from "./property-form";
 import React from "@heroicons/react";
 import { Fragment } from "react";
 
@@ -42,13 +42,13 @@ export function AdminDashboard() {
                 },
                 {
                     icon: <BuildingStorefrontIcon {...icon} />,
-                    name: "booking",
-                    path: "/booking",
+                    name: "property",
+                    path: "/property",
                     element: <Booking />,
                     anotherPage: {
-                        name: "booking-form",
-                        path: "/booking-form",
-                        element: <BookingForm />
+                        name: "property-form",
+                        path: "/property-form",
+                        element: <PropertyForm />
                     }
                 },
                 {
@@ -81,8 +81,8 @@ export function AdminDashboard() {
                     element: <Profile />
                 },
                 {
-                    name: "booking",
-                    path: "/booking",
+                    name: "property",
+                    path: "/property",
                     element: <Booking />
                 },
                 {
@@ -91,9 +91,9 @@ export function AdminDashboard() {
                     element: <Profile />
                 },
                 {
-                    name: "booking-form",
-                    path: "/booking-form",
-                    element: <BookingForm />
+                    name: "property-form",
+                    path: "/property-form",
+                    element: <PropertyForm />
                 }
             ],
         }
