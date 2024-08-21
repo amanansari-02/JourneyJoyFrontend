@@ -5,10 +5,13 @@ import {
     SimpleFooter,
 } from "@/widgets/layout";
 import { useMaterialTailwindController } from "@/context";
-import { BookmarkIcon, BookOpenIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, HomeIcon, InformationCircleIcon, TableCellsIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { BuildingStorefrontIcon, HomeIcon, InformationCircleIcon, TableCellsIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { Profile } from "@/pages";
 import Home from "@/pages/dashboard/Home"
 import Booking from "./booking";
+import BookingForm from "./booking-form";
+import React from "@heroicons/react";
+import { Fragment } from "react";
 
 export function AdminDashboard() {
 
@@ -42,16 +45,60 @@ export function AdminDashboard() {
                     name: "booking",
                     path: "/booking",
                     element: <Booking />,
+                    anotherPage: {
+                        name: "booking-form",
+                        path: "/booking-form",
+                        element: <BookingForm />
+                    }
                 },
                 {
                     icon: <InformationCircleIcon {...icon} />,
                     name: "notifications",
                     path: "/notifications",
                     element: <Profile />,
-                },
+                }
             ],
         }
     ];
+
+    const adminDashboardData = [
+        {
+            layout: "admin-dashboard",
+            pages: [
+                {
+                    name: "dashboard",
+                    path: "/home",
+                    element: <Home />
+                },
+                {
+                    name: "profile",
+                    path: "/profile",
+                    element: <Profile />
+                },
+                {
+                    name: "tables",
+                    path: "/tables",
+                    element: <Profile />
+                },
+                {
+                    name: "booking",
+                    path: "/booking",
+                    element: <Booking />
+                },
+                {
+                    name: "notifications",
+                    path: "/notifications",
+                    element: <Profile />
+                },
+                {
+                    name: "booking-form",
+                    path: "/booking-form",
+                    element: <BookingForm />
+                }
+            ],
+        }
+    ];
+
     const [controller] = useMaterialTailwindController();
     const { sidenavType } = controller;
 
@@ -66,14 +113,16 @@ export function AdminDashboard() {
             <div className="p-4 xl:ml-80">
                 <DashboardNavbar />
                 <Routes>
-                    {routes.map(
-                        ({ layout, pages }) =>
-                            layout === "admin-dashboard" &&
-                            pages.map(({ path, element }) => (
+                    {adminDashboardData.map(({ layout, pages }) =>
+                        layout === "admin-dashboard" &&
+                        pages.map(({ path, element }, index) => (
+                            <Fragment key={`${index}`}>
                                 <Route exact path={path} element={element} />
-                            ))
+                            </Fragment>
+                        ))
                     )}
                 </Routes>
+
                 <div className="text-blue-gray-600">
                     <SimpleFooter />
                 </div>

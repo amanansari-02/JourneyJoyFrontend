@@ -32,7 +32,6 @@ const imageArray = [
 
 const ImagesVideos = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
     const [images, setImages] = useState(imageArray);
     const [videoArray, setVideoArray] = useState([]);
     const [isLoading, setIsLoading] = useState(false);

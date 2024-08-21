@@ -21,8 +21,6 @@ const schema = z.object({
 export function ForgotPassword() {
 
     const navigate = useNavigate();
-    const signUpPath = `/${signUp}`;
-    const dasboardPath = `/${dashboard}`;
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(schema)

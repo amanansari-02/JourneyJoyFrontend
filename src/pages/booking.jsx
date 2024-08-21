@@ -3,13 +3,19 @@ import React from 'react'
 import { authorsTableData } from "@/data";
 import { EllipsisVerticalIcon, EyeIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
 import { ArchiveBoxIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
+import { Link, useNavigate } from 'react-router-dom';
+import { bookingForm } from '@/utils/route';
 
 function Booking() {
+    const navigate = useNavigate();
     return (
         <div>
             <div className='h-16 w-full flex justify-between mb-8'>
                 <p className='text-xl font-semibold flex items-center'>Property Details</p>
-                <Button variant="filled" className='mx-2 my-2'>Add Property</Button>
+                <Link to="/admin-dashboard/booking-form">
+                    <Button variant="filled" className='mx-2 my-2' >Add Property</Button>
+                </Link>
             </div>
             <div>
                 <Card>
