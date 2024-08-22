@@ -6,3 +6,9 @@ export const TOAST_TYPE_ARRAY = {
     DEFAULT: '#60a5fa',
     WARNING: '#facc15',
 }
+export const TOAST_TYPE = {
+    SUCCESS: 'SUCCESS',
+    FAILURE: 'FAILURE',
+    WARNING: 'WARNING',
+    DEFAULT: 'DEFAULT'
+}

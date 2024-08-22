@@ -1,6 +1,9 @@
+import { ERROR_MSG } from "@/constants/error-msg";
+import { TOAST_TYPE } from "@/constants/toast-constant";
 import UserService from "@/services/UserService";
 import { setItemToLocalStorage, showToast } from "@/utils/common-service";
 import { signIn } from "@/utils/route";
+import { CONST_MSG, SIGN_UP } from "@/utils/text-content";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Input,
@@ -19,10 +22,10 @@ export function SignUp() {
   const [dragging, setDragging] = useState(false);
 
   const schema = z.object({
-    Name: z.string().min(4, "Name is required"),
-    Email: z.string().min(1, "Email is required").email("Invalid email address"),
-    Password: z.string().min(1, "Password is required"),
-    PhoneNo: z.string().min(10, "Invalid mobile number"),
+    Name: z.string().min(4, ERROR_MSG.NAME_REQUIRED),
+    Email: z.string().min(1, ERROR_MSG.EMAIL_REQUIRED).email(ERROR_MSG.INVALID_EMAIL),
+    Password: z.string().min(1, ERROR_MSG.PASSWORD_REQUIRED),
+    PhoneNo: z.string().min(10, ERROR_MSG.INVALID_MOBILE_NUM),
     ProfilePhoto: z.any().optional()
   })
 
@@ -44,13 +47,12 @@ export function SignUp() {
       if (res?.data?.status == HttpStatusCode.Created) {
         setItemToLocalStorage('user', formData)
         navigate(signIn)
-        showToast('SUCCESS', res.data.message)
+        showToast(TOAST_TYPE.SUCCESS, res.data.message)
       } else if (res?.data?.status == HttpStatusCode.BadRequest) {
-        showToast('FAILURE', res.data.error)
+        showToast(TOAST_TYPE.FAILURE, res.data.error)
       } else {
-        showToast('FAILURE', "User not added")
+        showToast(TOAST_TYPE.FAILURE, ERROR_MSG.USER_NOT_ADDED)
       }
-      console.log("res", res);
 
     } catch (err) {
       console.error("error: ", err)
@@ -97,7 +99,7 @@ export function SignUp() {
       <div className="w-full lg:w-3/5 flex flex-col items-center justify-center">
         <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2" onSubmit={handleSubmit(onSubmit)}>
           <Typography variant="small" color="blue-gray" className="-mb-3 font-medium">
-            Profile photo
+            {SIGN_UP.INPUT_1}
           </Typography>
           <div
             className={`flex items-center justify-center w-full mt-5 ${dragging ? 'border-blue-500' : ''}`}
@@ -128,7 +130,7 @@ export function SignUp() {
 
           <div className="mb-1 flex flex-col gap-3 mt-4">
             <Typography variant="small" color="blue-gray" className=" font-medium">
-              Your name
+              {SIGN_UP.INPUT_2}
             </Typography>
             <Input
               size="lg"
@@ -143,7 +145,7 @@ export function SignUp() {
           </div>
           <div className="mb-1 flex flex-col gap-3">
             <Typography variant="small" color="blue-gray" className="mt-2 font-medium">
-              Your email
+              {CONST_MSG.YOUR_EMAIL}
             </Typography>
             <Input
               size="lg"
@@ -158,7 +160,7 @@ export function SignUp() {
           </div>
           <div className="mb-1 flex flex-col gap-3">
             <Typography variant="small" color="blue-gray" className="mt-2 font-medium">
-              Password
+              {CONST_MSG.PASSWORD}
             </Typography>
             <Input
               type="password"
@@ -174,7 +176,7 @@ export function SignUp() {
           </div>
           <div className="mb-1 flex flex-col gap-3">
             <Typography variant="small" color="blue-gray" className="mt-2 font-medium">
-              Mobile number
+              {SIGN_UP.INPUT_3}
             </Typography>
             <Input
               type="number"
@@ -190,11 +192,11 @@ export function SignUp() {
           </div>
 
           <Button className="mt-6" fullWidth type="submit">
-            Register Now
+            {SIGN_UP.BUTTON_1}
           </Button>
           <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
-            Already have an account?
-            <Link to="/sign-in" className="text-gray-900 ml-1">Sign in</Link>
+            {SIGN_UP.TEXT_1}
+            <Link to="/sign-in" className="text-gray-900 ml-1">{SIGN_UP.LINK_1}</Link>
           </Typography>
         </form>
 

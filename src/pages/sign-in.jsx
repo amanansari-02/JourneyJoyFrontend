@@ -1,4 +1,4 @@
-import { dashboard, forgotPassword, signUp } from "../utils/route";
+import { dashboard, forgotPassword, signUp, home } from "../utils/route";
 import {
   Input,
   Button,
@@ -13,10 +13,13 @@ import { HttpStatusCode } from "axios";
 import { setItemToLocalStorage, showToast } from "@/utils/common-service";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "@/utils/firebase";
+import { ERROR_MSG } from "@/constants/error-msg";
+import { TOAST_TYPE } from "@/constants/toast-constant";
+import { CONST_MSG, SIGN_IN } from "@/utils/text-content";
 
 const schema = z.object({
-  Email: z.string().min(1, "Email is required").email("Invalid email address"),
-  Password: z.string().min(1, "Password is required")
+  Email: z.string().min(1, ERROR_MSG.EMAIL_REQUIRED).email(ERROR_MSG.INVALID_EMAIL),
+  Password: z.string().min(1, ERROR_MSG.PASSWORD_REQUIRED)
 })
 
 export function SignIn() {
@@ -33,19 +36,17 @@ export function SignIn() {
           PhoneNo: user?.phoneNumber || '',
           ProfilePhoto: user?.photoURL || '',
         }
-        console.log("User Info:", userData);
         const formData = new FormData()
         for (const key in userData) {
           formData.append(key, userData[key])
         }
         const res = await AuthServices.userLogin(formData);
-        console.log("res", res);
 
         const data = JSON.stringify(res.data.data)
         if (res.data.status == HttpStatusCode.Ok) {
           setItemToLocalStorage('user', data)
           navigate(dashboard)
-          showToast('SUCCESS', res.data.message)
+          showToast(TOAST_TYPE.SUCCESS, res.data.message)
         }
       })
       .catch((error) => {
@@ -70,14 +71,25 @@ export function SignIn() {
       for (const key in allData) {
         formData.append(key, allData[key])
       }
+
       const res = await AuthServices.userLogin(formData);
       const userData = JSON.stringify(res.data.data)
-      if (res.data.status == HttpStatusCode.Ok) {
+      const status = res.data.status
+
+      if (status == HttpStatusCode.Ok) {
+        const role = res.data.data.role
+
         setItemToLocalStorage('user', userData)
-        navigate(dashboard)
-        showToast('SUCCESS', res.data.message)
+        if (role == 1) {
+          navigate("/admin-dashboard" + home)
+        } else if (role == 2) {
+          navigate(dashboard)
+        }
+        showToast(TOAST_TYPE.SUCCESS, res.data.message)
+      } else if (status == HttpStatusCode.BadRequest) {
+        showToast(TOAST_TYPE.FAILURE, res.data.error)
       } else {
-        showToast('FAILURE', "Internal server error")
+        showToast(TOAST_TYPE.FAILURE, ERROR_MSG.INTERNAL_SERVER_ERR)
       }
     } catch (error) {
       console.log("err", error);
@@ -88,13 +100,13 @@ export function SignIn() {
     <section className="m-8 flex gap-4">
       <div className="w-full lg:w-3/5 mt-24">
         <div className="text-center">
-          <Typography variant="h2" className="font-bold mb-4">Sign In</Typography>
-          <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Enter your email and password to Sign In.</Typography>
+          <Typography variant="h2" className="font-bold mb-4">{CONST_MSG.SIGN_IN}</Typography>
+          <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">{SIGN_IN.TEXT_1}</Typography>
         </div>
         <form className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-1 flex flex-col gap-2">
             <Typography variant="small" color="blue-gray" className="mb-1 font-medium">
-              Your email
+              {CONST_MSG.YOUR_EMAIL}
             </Typography>
             <Input
               size="lg"
@@ -107,7 +119,7 @@ export function SignIn() {
             />
             {errors.Email && <p className="text-red-600 ">{errors.Email.message}</p>}
             <Typography variant="small" color="blue-gray" className="mb-2 font-medium">
-              Password
+              {CONST_MSG.PASSWORD}
             </Typography>
             <Input
               type="password"
@@ -122,12 +134,12 @@ export function SignIn() {
             {errors.Password && <p className="text-red-600">{errors.Password.message}</p>}
           </div>
           <Button className="mt-6" fullWidth type="submit">
-            Sign In
+            {CONST_MSG.SIGN_IN}
           </Button>
 
           <div className="flex items-center justify-between gap-2 mt-6">
             <Typography variant="small" className="font-medium text-gray-900">
-              <Link to={forgotPassword} className="text-gray-900 ml-1">Forgot Password</Link>
+              <Link to={forgotPassword} className="text-gray-900 ml-1">{SIGN_IN.LINK_1}</Link>
             </Typography>
           </div>
           <div className="space-y-4 mt-8">
@@ -145,12 +157,12 @@ export function SignIn() {
                   </clipPath>
                 </defs>
               </svg>
-              <span>Sign in With Google</span>
+              <span>{SIGN_IN.SIGN_IN_GOOGLE}</span>
             </Button>
           </div>
           <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
-            Not registered?
-            <Link to={signUp} className="text-gray-900 ml-1">Create account</Link>
+            {SIGN_IN.TEXT_2}
+            <Link to={signUp} className="text-gray-900 ml-1">{SIGN_IN.LINK_2}</Link>
           </Typography>
         </form>
 

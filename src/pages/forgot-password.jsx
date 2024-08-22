@@ -1,4 +1,4 @@
-import { dashboard, signUp } from "../utils/route";
+import { signUp } from "../utils/route";
 import {
     Input,
     Button,
@@ -8,11 +8,6 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from "zod";
-import AuthServices from "@/services/AuthServices";
-import { HttpStatusCode } from "axios";
-import { showToast } from "@/utils/common-service";
-import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "@/utils/firebase";
 
 const schema = z.object({
     email: z.string().min(1, "Email is required").email("Invalid email address"),

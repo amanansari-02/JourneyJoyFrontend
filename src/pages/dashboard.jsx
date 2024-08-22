@@ -2,6 +2,7 @@ import { Footer } from "@/widgets/layout";
 import React from "react";
 import { Card, CardBody, Typography, Avatar } from "@material-tailwind/react";
 import DashboardHeader from "@/widgets/layout/dashboardHeader";
+import { USER_DASHBOARD } from "@/utils/text-content";
 
 
 function HotelCard({ img, name, title, price }) {
@@ -106,7 +107,7 @@ function Dashboard() {
             {/* Top Places */}
             <div>
                 <Typography variant="h3" className="flex justify-center text-blue-gray-600 mb-3">
-                    Top 6 adventure place
+                    {USER_DASHBOARD.TEXT_1}
                 </Typography>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mx-4 mb-2">
                     {members.map((props, key) => (
@@ -119,13 +120,13 @@ function Dashboard() {
             <Typography variant="lead" className="flex flex-col lg:flex-row justify-between items-center">
                 <Typography variant="lead" className="px-4 py-6 lg:m-12 w-full lg:w-[60%] text-center lg:text-left">
                     <Typography variant="paragraph" className="text-blue-gray-400 text-3xl font-normal">
-                        Best Of
+                        {USER_DASHBOARD.SECTION_1.TEXT_1}
                     </Typography>
                     <Typography variant="paragraph" className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-medium mt-5">
-                        2024
+                        {USER_DASHBOARD.SECTION_1.TEXT_2}
                     </Typography>
                     <Typography variant="paragraph" className="mt-5">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores deleniti placeat voluptatem fugiat eaque sequi quibusdam distinctio adipisci commodi. Minima quo officiis quasi aut, repudiandae iusto deserunt quibusdam aliquid consectetur, nemo voluptates. Quia incidunt sapiente fugit quae temporibus
+                        {USER_DASHBOARD.SECTION_1.TEXT_3}
                     </Typography>
                 </Typography>
                 <Typography variant="lead" className="w-full lg:w-[40%]">
@@ -138,7 +139,7 @@ function Dashboard() {
             {/* Some Text Section */}
             <div className="relative mt-4 flex flex-col items-center">
                 <Typography variant="paragraph" className="flex justify-center w-full md:w-[50%] text-center mb-4 px-4 md:px-0">
-                    Embark on a thrilling expedition through breathtaking landscapes, where every step uncovers new wonders and every horizon promises adventure. Join us as we traverse the unknown, forging memories that will last a lifetime.
+                    {USER_DASHBOARD.SECTION_2.TEXT_1}
                 </Typography>
                 <Typography
                     variant="h1"
@@ -151,7 +152,7 @@ function Dashboard() {
                         textAlign: 'center',
                     }}
                 >
-                    ADVENTURE
+                    {USER_DASHBOARD.SECTION_2.TEXT_2}
                 </Typography>
             </div>
 
@@ -167,10 +168,10 @@ function Dashboard() {
 
                 <div className="flex flex-col justify-center items-center h-full text-center relative">
                     <Typography variant="h1" className="text-4xl text-white mb-4 sm:text-6xl">
-                        Ready to Explore?
+                        {USER_DASHBOARD.SECTION_3.TEXT_1}
                     </Typography>
                     <Typography variant="h1" className="text-4xl text-white sm:text-6xl">
-                        Book Your Adventure Now!
+                        {USER_DASHBOARD.SECTION_3.TEXT_2}
                     </Typography>
                 </div>
             </Card>
@@ -184,13 +185,13 @@ function Dashboard() {
             >
                 <div className="flex flex-col justify-center items-center h-full text-center ">
                     <Typography variant="paragraph" className="text-2lg text-black mb-4 sm:text-4xl ">
-                        Ready to embark on your next
+                        {USER_DASHBOARD.SECTION_4.TEXT_1}
                     </Typography>
                     <Typography variant="paragraph" className="text-2xl text-gray-700 sm:text-4xl">
-                        adventure? Connect with JourneyJoy today
+                        {USER_DASHBOARD.SECTION_4.TEXT_2}
                     </Typography>
                     <Typography variant="paragraph" className="text-2xl text-gray-700 sm:text-4xl">
-                        to start planning you dream trip.
+                        {USER_DASHBOARD.SECTION_4.TEXT_3}
                     </Typography>
                 </div>
             </Card>

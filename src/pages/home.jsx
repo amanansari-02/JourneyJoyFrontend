@@ -14,7 +14,7 @@ import { PageTitle, Footer } from "@/widgets/layout";
 import { FeatureCard, TeamCard } from "@/widgets/cards";
 import { featuresData, teamData, contactData } from "@/data";
 import { contactUs, ourTeam } from "@/utils/route";
-import { CONST_MSG, DASHBOARD_TEXT_CONTENT, HOME_TEXT_CONTENT } from "@/utils/text-content";
+import { DASHBOARD_TEXT_CONTENT, HOME_TEXT_CONTENT } from "@/utils/text-content";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,10 +22,12 @@ import AuthServices from "@/services/AuthServices";
 import { HttpStatusCode } from "axios";
 import { showToast } from "@/utils/common-service";
 import { BeatLoader } from "react-spinners";
+import { ERROR_MSG } from "@/constants/error-msg";
+import { TOAST_TYPE } from "@/constants/toast-constant";
 
 const contactSchema = z.object({
-  FullName: z.string().min(1, "Name is required"),
-  Email: z.string().min(1, "Email is required").email("Invalid email address"),
+  FullName: z.string().min(1, ERROR_MSG.NAME_REQUIRED),
+  Email: z.string().min(1, ERROR_MSG.EMAIL_REQUIRED).email(ERROR_MSG.INVALID_EMAIL),
   Message: z.string().nullable()
 })
 
@@ -43,9 +45,9 @@ export function Home() {
       const contactUs = await AuthServices.contactUsForm(data)
       if (contactUs?.data?.status == HttpStatusCode.Ok) {
         reset();
-        showToast('SUCCESS', contactUs?.data?.message)
+        showToast(TOAST_TYPE.SUCCESS, contactUs?.data?.message)
       } else {
-        showToast('FAILURE', CONST_MSG.INTERNAL_SERVER_ERROR)
+        showToast(TOAST_TYPE.FAILURE, ERROR_MSG.INTERNAL_SERVER_ERR)
       }
 
     } catch (err) {
