@@ -1,9 +1,11 @@
 import { Avatar, Button, Card, CardBody, CardHeader, Chip, IconButton, Menu, MenuHandler, MenuItem, MenuList, Typography } from '@material-tailwind/react'
 import React from 'react'
 import { authorsTableData } from "@/data";
-import { EllipsisVerticalIcon, EyeIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
-import { ArchiveBoxIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import { Link, useNavigate } from 'react-router-dom';
+import eyeIcon from '../../public/img/eye-icon.gif'
+import editIcon from '../../public/img/edit-icon.gif'
+import deleteIcon from '../../public/img/delete-icon.gif'
 
 function Booking() {
     const navigate = useNavigate();
@@ -11,7 +13,7 @@ function Booking() {
         <div>
             <div className='h-16 w-full flex justify-between mb-8'>
                 <p className='text-xl font-semibold flex items-center'>Property Details</p>
-                <Link to="/admin-dashboard/booking-form">
+                <Link to="/admin-dashboard/property-form">
                     <Button variant="filled" className='mx-2 my-2' >Add Property</Button>
                 </Link>
             </div>
@@ -105,17 +107,19 @@ function Booking() {
                                                                 <EllipsisVerticalIcon className="h-6 w-6 text-blue-gray-500" />
                                                             </IconButton>
                                                         </MenuHandler>
-                                                        <MenuList className='w-[10%]'>
+                                                        <MenuList className='w-20'>
+                                                            <Link to="/admin-dashboard/property-view">
+                                                                <MenuItem className="flex items-center gap-2">
+                                                                    <p><img src={eyeIcon} className='h-5 w-5' /></p>
+                                                                    <p>View</p>
+                                                                </MenuItem>
+                                                            </Link>
                                                             <MenuItem className="flex items-center gap-2">
-                                                                <p><EyeIcon className='h-5 w-5' /></p>
-                                                                <p>View</p>
-                                                            </MenuItem>
-                                                            <MenuItem className="flex items-center gap-2">
-                                                                <p><PencilSquareIcon className='h-5 w-5' /></p>
+                                                                <p><img src={editIcon} className='h-5 w-5' /></p>
                                                                 <p>Edit</p>
                                                             </MenuItem>
                                                             <MenuItem className="flex items-center gap-2">
-                                                                <p><TrashIcon className='h-5 w-5' /></p>
+                                                                <p><img src={deleteIcon} className='h-5 w-5' /></p>
                                                                 <p>Delete</p>
                                                             </MenuItem>
                                                         </MenuList>

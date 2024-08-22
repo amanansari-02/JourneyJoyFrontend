@@ -12,6 +12,7 @@ import Booking from "./booking";
 import PropertyForm from "./property-form";
 import React from "@heroicons/react";
 import { Fragment } from "react";
+import PropertyView from "./property-view";
 
 export function AdminDashboard() {
 
@@ -45,11 +46,11 @@ export function AdminDashboard() {
                     name: "property",
                     path: "/property",
                     element: <Booking />,
-                    anotherPage: {
-                        name: "property-form",
-                        path: "/property-form",
-                        element: <PropertyForm />
-                    }
+                    // anotherPage: {
+                    //     name: "property-form",
+                    //     path: "/property-form",
+                    //     element: <PropertyForm />
+                    // }
                 },
                 {
                     icon: <InformationCircleIcon {...icon} />,
@@ -94,6 +95,11 @@ export function AdminDashboard() {
                     name: "property-form",
                     path: "/property-form",
                     element: <PropertyForm />
+                },
+                {
+                    name: "property-view",
+                    path: "/property-view",
+                    element: <PropertyView />
                 }
             ],
         }
