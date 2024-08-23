@@ -1,20 +1,17 @@
 import { Input, Option, Select, Textarea, Typography } from '@material-tailwind/react';
-import React, { useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
+import React, { useState } from 'react';
+import ImageUploading from 'react-images-uploading';
 
 function PropertyForm() {
+  const [images, setImages] = useState([]);
+  const maxNumber = 69;
 
-  const onDrop = useCallback((acceptedFiles) => {
-    // Handle the files here
-    console.log('Accepted files:', acceptedFiles);
-    // You can perform further actions such as uploading files
-  }, []);
+  console.log("images", images);
+  
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: 'image/*',
-    multiple: true,
-  });
+  const onChange = (imageList, addUpdateIndex) => {
+    setImages(imageList);
+  };
 
   return (
     <div className="mt-4 p-4">
@@ -39,8 +36,7 @@ function PropertyForm() {
             <Typography variant="small" color="blue-gray" className="font-medium">
               Property Type
             </Typography>
-            <Select size='lg' label="Select Property Type"
-            >
+            <Select size='lg' label="Select Property Type">
               <Option>Hotel</Option>
               <Option>Villa</Option>
               <Option>Other</Option>
@@ -48,7 +44,7 @@ function PropertyForm() {
           </div>
         </div>
 
-        {/* Second Row: Your Address */}
+        {/* Second Row: Property Price and Location */}
         <div className="flex flex-col sm:flex-row sm:gap-4 gap-6">
           <div className="flex flex-col gap-2 sm:w-1/2">
             <Typography variant="small" color="blue-gray" className="font-medium">
@@ -71,7 +67,7 @@ function PropertyForm() {
             </Typography>
             <Input
               size="lg"
-              placeholder=" 6, Nr Jalram Temple, Tribhuvan Terrace, Station Rd, Kandivli(w)"
+              placeholder="6, Nr Jalram Temple, Tribhuvan Terrace, Station Rd, Kandivli(w)"
               className="w-full !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
@@ -80,6 +76,7 @@ function PropertyForm() {
           </div>
         </div>
 
+        {/* Description */}
         <div className="flex flex-col gap-2">
           <Typography variant="small" color="blue-gray" className="font-medium">
             Description
@@ -94,6 +91,7 @@ function PropertyForm() {
           />
         </div>
 
+        {/* Third Row: Total Rooms and City */}
         <div className="flex flex-col sm:flex-row sm:gap-4 gap-6">
           <div className="flex flex-col gap-2 sm:w-1/2">
             <Typography variant="small" color="blue-gray" className="font-medium">
@@ -125,17 +123,73 @@ function PropertyForm() {
           </div>
         </div>
 
-        <div className="flex  gap-2 justify-center">
-          {/* <div className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-blue-gray-300 rounded-lg"> */}
-            <div {...getRootProps()} className={` w-[90%] h-24 bg-[#F5F5F5] p-4 text-center ${isDragActive ? 'bg-blue-gray-100' : 'bg-gray-50'} border-2 border-dashed border-blue-gray-300 rounded-lg cursor-pointer`}>
-              <input {...getInputProps()} />
-              {isDragActive ? (
-                <p className="text-blue-gray-600 text-center flex justify-center">Drop the images here ...</p>
-              ) : (
-                <p className="text-blue-gray-600 text-center flex justify-center">Drag 'n' drop some images here, or click to select images</p>
-              )}
-            </div>
-          {/* </div> */}
+        {/* Image Upload Section */}
+        <div className="flex flex-col gap-2">
+          <Typography variant="small" color="blue-gray" className="font-medium">
+            Upload Images
+          </Typography>
+          <ImageUploading
+            multiple
+            value={images}
+            onChange={onChange}
+            maxNumber={maxNumber}
+            dataURLKey="data_url"
+            acceptType={['jpg', 'png']}
+          >
+            {({
+              imageList,
+              onImageUpload,
+              onImageRemoveAll,
+              onImageUpdate,
+              onImageRemove,
+              isDragging,
+              dragProps,
+            }) => (
+              // write your building UI
+              <div className="upload__image-wrapper">
+                <button
+                  type="button"
+                  className="border border-dashed border-gray-400 p-4 rounded w-full text-center"
+                  style={isDragging ? { color: 'red' } : undefined}
+                  onClick={onImageUpload}
+                  {...dragProps}
+                >
+                  Click or Drag & Drop here
+                </button>
+                <div className="grid gap-4 sm:grid-cols-3 grid-cols-1 mt-4">
+                  {imageList.map((image, index) => (
+                    <div key={index} className="relative group">
+                      <img
+                        src={image['data_url']}
+                        alt="img"
+                        className="object-cover shadow rounded w-full !max-h-48"
+                      />
+                      <button
+                        type="button"
+                        className="absolute top-2 right-2 bg-gray-700 text-white rounded-full p-1 opacity-75 group-hover:opacity-100"
+                        onClick={() => onImageRemove(index)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <line x1="18" y1="6" x2="6" y2="18"></line>
+                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </ImageUploading>
         </div>
       </form>
     </div>
