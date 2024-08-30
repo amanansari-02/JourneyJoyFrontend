@@ -62,7 +62,7 @@ export function SignIn() {
   })
 
   const onSubmit = async (data) => {
-    try {
+    try { 
       const allData = {
         ...data,
         IsEmailLogin: 2
@@ -82,7 +82,7 @@ export function SignIn() {
         setItemToLocalStorage('user', userData)
         if (role == 1) {
           navigate("/admin-dashboard" + home)
-        } else if (role == 2) {
+        } else if (role == 2) {          
           navigate(dashboard)
         }
         showToast(TOAST_TYPE.SUCCESS, res.data.message)

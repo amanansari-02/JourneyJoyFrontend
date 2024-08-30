@@ -148,7 +148,7 @@ function Dashboard() {
                         backgroundImage: `url('https://images.pexels.com/photos/33109/fall-autumn-red-season.jpg?auto=compress&cs=tinysrgb&w=600?auto=compress&cs=tinysrgb&w=1200')`,
                         backgroundSize: 'cover',
                         WebkitTextFillColor: 'transparent',
-                        backgroundAttachment: 'fixed', // Fixed background
+                        backgroundAttachment: 'fixed',
                         textAlign: 'center',
                     }}
                 >
