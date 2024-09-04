@@ -1,35 +1,62 @@
+import PropertyServices from '@/services/PropertyServices';
 import { property } from '@/utils/route';
 import DashboardHeader from '@/widgets/layout/dashboardHeader'
 import { Button, Card, CardBody, Typography } from '@material-tailwind/react';
-import React from 'react'
+import { HttpStatusCode } from 'axios';
+import React, { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-
 
 function Property() {
     const location = useLocation();
     const navigate = useNavigate()
     const locationValue = location?.state?.location || ''
     const priceRangeValue = location?.state?.priceRange || ''
+    const apiUrl = import.meta.env.VITE_API_URL
+    const data = useMemo(() => ({ location: locationValue, price: priceRangeValue }), [locationValue, priceRangeValue]);
 
-    const SendSingleProperty = () => {
-        const singleprop = `${property}/1`
+    const [propertyData, setPropertyData] = useState([]);
+
+    const SendSingleProperty = (id) => {
+        const singleprop = `${property}/${id}`
         navigate(singleprop)
     }
 
+    // api by search
+    const SearchPropertyApi = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await PropertyServices.getPropertyDataBySearch(data, token)
+            const status = res.data.status
+            if (status == HttpStatusCode.Ok) {
+                setPropertyData(res.data.data)
+            } else if (status == HttpStatusCode.BadRequest) {
+                setPropertyData([])
+            }
+        } catch (err) {
+            console.error("error", err);
+        }
+    }
+
+    useEffect(() => {
+        SearchPropertyApi()
+    }, [data])
+
     function ProductListCard({
+        id,
         img,
         name,
         price,
         guests,
-        bedroom
+        bedroom,
+        type
     }) {
         return (
             <Card className="border border-gray-300 mb-2 mx-4 sm:mx-0 hover:shadow-2xl transition-shadow duration-300">
                 <CardBody className="m-0 p-0">
-                    <img src={img} alt={img} className="min-w-[280px] max-h-[60%] w-full shadow-lg shadow-gray-500/10 rounded-t-xl" />
+                    <img src={img} alt={img} className="min-w-[280px] max-h-[280px] w-full shadow-lg shadow-gray-500/10 rounded-t-xl" />
                     <div className="p-5">
-                        <Typography className="mb-2 text-gray-400 font-medium" >
-                            VILLA
+                        <Typography className="mb-2 text-gray-400 font-medium tracking-wide" >
+                            {type}
                         </Typography>
                         <div>
                             <Typography className="mb-2" color="blue-gray" variant="h6">
@@ -46,38 +73,13 @@ function Property() {
                                 <span className='text-sm font-medium'>From</span>
                                 <span className='text-black font-semibold text-lg'> {price}</span>
                             </Typography>
-                            <Button variant="filled" onClick={SendSingleProperty}>Details</Button>
+                            <Button variant="filled" onClick={() => SendSingleProperty(id)}>Details</Button>
                         </div>
                     </div>
                 </CardBody>
             </Card>
         );
     }
-
-    const CONTENTS = [
-        {
-            img: "https://t4.ftcdn.net/jpg/03/70/64/43/360_F_370644357_MDF4UXLAXTyyi2OyuK66tWW9cA2f8svL.jpg",
-            name: "Five Palm Jumeirah Beachfront Villa - Pool, Jacuzzi",
-            price: "2,500",
-            guests: 8,
-            bedroom: 3
-        },
-        {
-            img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR49WuECr-ZZNOGJSYRCXnZYCbUAYjXRTqNNg&s",
-            name: "Two Bedroom Arabian Summerhouse Family Suite",
-            price: "2,300",
-            guests: 10,
-            bedroom: 4
-        },
-        {
-            img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtHw9dVLd1CmN6Q7g4aoBQfzZTJweeZ6U2mA&s",
-            name: "Beach Front Villa in Five Palm Jumeirah Hotell",
-            price: "1,240",
-            guests: 4,
-            bedroom: 2
-        },
-
-    ];
 
     return (
         <div>
@@ -86,18 +88,23 @@ function Property() {
             {/*  */}
             <section>
                 <div className="mx-auto container">
-                    <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 md:grid-cols-2">
-                        {CONTENTS.map(({ img, name, price, guests, bedroom }, index) => (
-                            <ProductListCard
-                                key={index}
-                                img={img}
-                                name={name}
-                                price={price}
-                                guests={guests}
-                                bedroom={bedroom}
-                            />
-                        ))}
-                    </div>
+                    {propertyData.length > 0 ?
+                        (<div className="grid grid-cols-1 gap-8 lg:grid-cols-3 md:grid-cols-2">
+                            {propertyData.map(({ id, propertyImages, propertyName, price, noOfGuests, rooms, propertyType }, index) => (
+                                <ProductListCard
+                                    id={id}
+                                    key={index}
+                                    img={`${apiUrl}/${propertyImages[0]}`}
+                                    name={propertyName}
+                                    price={price}
+                                    guests={noOfGuests}
+                                    bedroom={rooms}
+                                    type={propertyType}
+                                />
+                            ))}
+                        </div>) :
+                        <div className='text-center text-xl mt-12 mb-20'>No Property Found</div>
+                    }
                 </div>
             </section>
         </div>

@@ -1,18 +1,21 @@
 import { Footer } from "@/widgets/layout";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardBody, Typography, Avatar } from "@material-tailwind/react";
 import DashboardHeader from "@/widgets/layout/dashboardHeader";
 import { USER_DASHBOARD } from "@/utils/text-content";
+import PropertyServices from "@/services/PropertyServices";
+
+const apiUrl = import.meta.env.VITE_API_URL
 
 
-function HotelCard({ img, name, title, price }) {
+function HotelCard({ id, propertyImages, propertyName, city, price }) {
     return (
         <Card className="rounded-lg bg-[#FAFAFA]" shadow={false}>
             <CardBody className="text-center flex justify-start">
                 <div>
                     <Avatar
-                        src={img}
-                        alt={name}
+                        src={`${apiUrl}/${propertyImages[0]}`}
+                        alt={propertyName}
                         variant="rounded"
                         size="xxl"
                         className="mx-auto object-top"
@@ -20,13 +23,13 @@ function HotelCard({ img, name, title, price }) {
                 </div>
                 <div>
                     <Typography variant="h5" color="blue-gray" className="!font-medium text-lg ml-4">
-                        {name}
+                        {propertyName}
                     </Typography>
                     <Typography
                         color="blue-gray"
                         className="mb-2 !text-base !font-semibold text-gray-600 ml-2"
                     >
-                        {title}
+                        {city}
                     </Typography>
                     <div className="flex items-center gap-1">
                         <div className="flex gap-1">
@@ -47,6 +50,7 @@ function HotelCard({ img, name, title, price }) {
                         <div className="flex-grow"></div>
                         <button
                             className="px-3 py-1 bg-blue-400 text-white rounded-md ml-4"
+                            // onClick={navigateTo}
                         >
                             Details
                         </button>
@@ -59,46 +63,25 @@ function HotelCard({ img, name, title, price }) {
 }
 
 
-const members = [
-    {
-        img: `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLrWxN3voOMIxw3vjj7buYSzyIvqFf05jrCg&s`,
-        name: "Diamond Hotel",
-        title: "Lonavla",
-        price: 8000
-    },
-    {
-        img: `https://t4.ftcdn.net/jpg/03/70/64/43/360_F_370644357_MDF4UXLAXTyyi2OyuK66tWW9cA2f8svL.jpg`,
-        name: "Crystall Villa",
-        title: "Bombay",
-        price: 5000
-    },
-    {
-        img: `https://cf.bstatic.com/static/img/theme-index/bg_villas_new/b765353732f8ec1ccac1e0d62786c37dc1c80ae7.jpg`,
-        name: "Ripple Hotel",
-        title: "Pune",
-        price: 12000
-    },
-    {
-        img: `https://media.istockphoto.com/id/506903162/photo/luxurious-villa-with-pool.jpg?s=612x612&w=0&k=20&c=Ek2P0DQ9nHQero4m9mdDyCVMVq3TLnXigxNPcZbgX2E=`,
-        name: "Sand Villa",
-        title: "Mahableshwar",
-        price: 19000
-    },
-    {
-        img: `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGpC6N4fsMlT85a8QBOc1aqztKs0CL3ugRKg&s`,
-        name: "Pine Hotel",
-        title: "Goa",
-        price: 14000
-    },
-    {
-        img: `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR49WuECr-ZZNOGJSYRCXnZYCbUAYjXRTqNNg&s`,
-        name: "Mona Lisa Villa",
-        title: "Lonavla",
-        price: 16000
-    }
-];
-
 function Dashboard() {
+    const [propertyData, setPropertyData] = useState([]);
+
+    // latest property
+    const getLatestProperty = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await PropertyServices.getLatestProperty(token)
+            setPropertyData(res.data.data)
+
+        } catch (err) {
+            console.error("error by id", err);
+        }
+    }
+
+    useEffect(() => {
+        getLatestProperty();
+    }, []);
+
     return (
         <div>
 
@@ -110,7 +93,7 @@ function Dashboard() {
                     {USER_DASHBOARD.TEXT_1}
                 </Typography>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mx-4 mb-2">
-                    {members.map((props, key) => (
+                    {propertyData.map((props, key) => (
                         <HotelCard key={key} {...props} />
                     ))}
                 </div>

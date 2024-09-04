@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { DASHBOARD_TEXT_CONTENT } from '@/utils/text-content';
 import { removeItemToLocalStorage } from '@/utils/common-service';
 
-
 function ConfirmationPopup({ isOpen, onClose, onConfirm }) {
     return (
         <Dialog size="sm" open={isOpen} toggler={onClose}>
@@ -53,18 +52,18 @@ function DashboardHeader({ locationVal, priceVal }) {
         {
             name: "dashboard",
             value: `${dashboard}`,
-            path: `/${dashboard}`,
+            path: `${dashboard}`,
             element: <Home />
         },
         {
             name: "Booking",
             value: `${booking}`,
-            path: `/${booking}`
+            path: `${booking}`
         },
         {
             name: "Profile",
             value: `${profile}`,
-            path: `/${profile}`
+            path: `${profile}`
         },
         {
             name: "Log Out",
@@ -133,7 +132,7 @@ function DashboardHeader({ locationVal, priceVal }) {
                                                 <Option value="5000-10000">5000-10000</Option>
                                                 <Option value="10000-15000">10000-15000</Option>
                                                 <Option value="15000-20000">15000-20000</Option>
-                                                <Option value="200000-last price">200000-last price</Option>
+                                                <Option value="200000-30000">200000-30000</Option>
                                             </Select>
                                         </div>
                                         <div className="mb-2 w-full md:w-[10%] flex items-center justify-center">

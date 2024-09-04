@@ -1,36 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Breadcrumbs, Card, CardBody, Typography } from '@material-tailwind/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWifi, faCoffee, faUser, faSwimmingPool, faGamepad, faTv, faUtensils } from '@fortawesome/free-solid-svg-icons';
 import notFoundImage from '../../public/img/404.jpg'
+import PropertyServices from '@/services/PropertyServices';
 
 function PropertyView() {
-    const images = [
-        // {
-        //     src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2bcicB37u7i0Vovi_r6NDawH3BlfOGJ2H_Q&s',
-        //     alt: 'image 1',
-        // },
-        // {
-        //     src: 'https://t4.ftcdn.net/jpg/03/70/64/43/360_F_370644357_MDF4UXLAXTyyi2OyuK66tWW9cA2f8svL.jpg',
-        //     alt: 'image 2',
-        // },
-        // {
-        //     src: 'https://images.unsplash.com/photo-1518623489648-a173ef7824f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80',
-        //     alt: 'image 3',
-        // },
-        // {
-        //     src: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80',
-        //     alt: 'image 4',
-        // },
-    ];
-
+    const { id } = useParams();
+    const apiUrl = import.meta.env.VITE_API_URL
     const slideHeight = '250px';
+
+    const [propertyData, setPropertyData] = useState([]);
+
+    const getPropertyById = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await PropertyServices.getPropertyById(id, token)
+            setPropertyData(res.data.data)
+        } catch (err) {
+            console.error("error by id", err);
+        }
+    }
+
+    useEffect(() => {
+        getPropertyById();
+    }, []);
 
     const items = [
         { icon: faWifi, text: 'Free Wifi' },
@@ -49,20 +49,20 @@ function PropertyView() {
                     <Card className="mt-6 md:w-[60%] w-full">
                         <CardBody>
                             <Typography variant="h5" color="blue-gray" className="mb-2">
-                                Beach Front Villa
+                                {propertyData?.propertyName}
                             </Typography>
                             <Typography variant='h3' className='text-orange-500 mb-4'>
-                                13000/per-day
+                                {propertyData?.price}/per-day
                             </Typography>
                             <Typography variant='paragraph' className='font-bold mb-2'>
-                                <span className='text-black'>Rooms:</span>  4
+                                <span className='text-black'>Rooms:</span>  {propertyData?.rooms}
                             </Typography>
                             <Typography variant='paragraph' className='font-bold mb-2'>
-                                <span className='text-black'>Address:</span>  6, Nr Jalram Temple, Tribhuvan Terrace, Station Rd, Kandivli(w)
+                                <span className='text-black'>Address:</span>  {propertyData?.location}
                             </Typography>
                             <Typography variant='paragraph' className='font-bold text-black'>Description: </Typography>
                             <Typography variant='paragraph' className='font-bold'>
-                                Boasting accommodation with a private pool, garden view and a balcony, The Perfect Stays Mountain Paradise Villa is situated in Lonavala. Featuring a 24-hour front desk, this property also provides guests with an outdoor fireplace. The villa also features free WiFi, free private parking and facilities for disabled guests.
+                                {propertyData?.description}
                             </Typography>
                         </CardBody>
                     </Card>
@@ -128,7 +128,7 @@ function PropertyView() {
                         }}
                         breakpoints={{
                             1024: {
-                                slidesPerView: images.length < 2 ? 1 : images.length < 3 ? 1 : 2,
+                                slidesPerView: propertyData?.propertyImages?.length < 2 ? 1 : propertyData?.propertyImages?.length < 3 ? 1 : 2,
                                 spaceBetween: 30,
                             },
                             768: {
@@ -141,25 +141,26 @@ function PropertyView() {
                             },
                         }}
                     >
-                        {!images.length ? (
+                        {!propertyData?.propertyImages?.length ? (
                             <SwiperSlide>
                                 <div className='flex justify-center'>
                                     <img
                                         src={notFoundImage}
-                                        className="w-[80%] h-[80%]  rounded-sm"
+                                        className="w-[70%] rounded-sm"
                                         style={{ height: slideHeight }}
                                         alt={"img"}
                                     />
                                 </div>
                             </SwiperSlide>
                         ) : (
-                            images.map((img, i) => (
-                                <SwiperSlide key={i}>
+                            propertyData?.propertyImages?.map((img, index) => (
+                                // console.log("img", img),
+                                <SwiperSlide key={index}>
                                     <img
-                                        src={img.src}
+                                        src={`${apiUrl}/${img}`}
                                         className="w-full h-[50%] object-cover rounded-sm"
                                         style={{ height: slideHeight }}
-                                        alt={img.alt}
+                                        alt={`Property Image ${index + 1}`}
                                     />
                                 </SwiperSlide>
                             ))

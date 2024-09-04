@@ -13,6 +13,7 @@ import PropertyForm from "./property-form";
 import React from "@heroicons/react";
 import { Fragment } from "react";
 import PropertyView from "./property-view";
+import PropertyEditForm from "./property-edit-form";
 
 export function AdminDashboard() {
 
@@ -98,8 +99,13 @@ export function AdminDashboard() {
                 },
                 {
                     name: "property-view",
-                    path: "/property-view",
+                    path: "/property-view/:id",
                     element: <PropertyView />
+                },
+                {
+                    name: "property-edit-form",
+                    path: "/property-edit/:id",
+                    element: <PropertyEditForm />
                 }
             ],
         }

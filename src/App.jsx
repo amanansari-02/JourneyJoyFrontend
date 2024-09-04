@@ -5,7 +5,7 @@ import { SignUp } from "./pages";
 import Dashboard from "./pages/dashboard";
 import Profile from "./pages/profile";
 import Property from "./pages/property";
-import { dashboard, forgotPassword, home, imagesVideosById, profile, property, propertyById, signIn, signUp } from "./utils/route";
+import { dashboard, forgotPassword, home, imagesVideos, profile, property, propertyById, signIn, signUp } from "./utils/route";
 import SingleProperty from "./pages/single-property";
 import ImagesVideos from "./pages/images-videos";
 import ProtectedRoute from "./widgets/layout/protected-routes";
@@ -32,7 +32,7 @@ function App() {
         <Route path={`${profile}`} element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path={`${property}`} element={<ProtectedRoute><Property /></ProtectedRoute>} />
         <Route path={`${propertyById}`} element={<ProtectedRoute><SingleProperty /></ProtectedRoute>} />
-        <Route path={`${imagesVideosById}`} element={<ProtectedRoute><ImagesVideos /></ProtectedRoute>} />
+        <Route path={`${imagesVideos}`} element={<ProtectedRoute><ImagesVideos /></ProtectedRoute>} />
         <Route path={`${forgotPassword}`} element={<ForgotPassword />} />
         <Route path={`admin-dashboard/*`} element={<AdminDashboard />} />
         <Route path="*" element={<Navigate to={`${home}`} replace />} />

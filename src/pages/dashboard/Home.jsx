@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     Typography,
     Card,
@@ -14,8 +14,27 @@ import {
 import { ClockIcon, FireIcon } from "@heroicons/react/24/solid";
 import statisticsCardsData from "@/data/statistics-cards-data";
 import { StatisticsCard } from "@/widgets/cards";
+import PropertyServices from "@/services/PropertyServices";
 
 export function Home() {
+    const apiUrl = import.meta.env.VITE_API_URL
+    const [propertyData, setPropertyData] = useState([]);
+
+    const getLatestProperty = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await PropertyServices.getLatestProperty(token)
+            setPropertyData(res.data.data)
+
+        } catch (err) {
+            console.error("error by id", err);
+        }
+    }
+
+    useEffect(() => {
+        getLatestProperty();
+    }, []);
+
     return (
         <div className="mt-12">
             <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-3 xl:grid-cols-3">
@@ -96,24 +115,24 @@ export function Home() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {projectsTableData.map(
-                                    ({ img, name, budget }, key) => {
-                                        const className = `py-3 px-5 ${key === projectsTableData.length - 1
+                                {propertyData.map(
+                                    ({ id, propertyName, price, propertyImages }, key) => {
+                                        const className = `py-3 px-5 ${key === propertyData.length - 1
                                             ? ""
                                             : "border-b border-blue-gray-50"
                                             }`;
 
                                         return (
-                                            <tr key={name}>
+                                            <tr key={propertyName}>
                                                 <td className={className}>
                                                     <div className="flex items-center gap-4">
-                                                        <Avatar src={img} alt={name} size="sm" />
+                                                        <Avatar src={`${apiUrl}/${propertyImages[0]}`} alt={propertyName} size="sm" />
                                                         <Typography
                                                             variant="small"
                                                             color="blue-gray"
                                                             className="font-bold"
                                                         >
-                                                            {name}
+                                                            {propertyName}
                                                         </Typography>
                                                     </div>
                                                 </td>
@@ -122,7 +141,7 @@ export function Home() {
                                                         variant="small"
                                                         className="text-xs font-medium text-blue-gray-600"
                                                     >
-                                                        {budget}
+                                                        &#8377;{price}
                                                     </Typography>
                                                 </td>
                                             </tr>

@@ -1,42 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Breadcrumbs, Button, Card, CardBody, Typography } from '@material-tailwind/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { imagesVideos } from '@/utils/route';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWifi, faCoffee, faUser, faSwimmingPool, faGamepad, faTv, faUtensils } from '@fortawesome/free-solid-svg-icons';
+import PropertyServices from '@/services/PropertyServices';
 
 
 function SingleProperty() {
     const navigate = useNavigate();
-    const images = [
-        {
-            src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2bcicB37u7i0Vovi_r6NDawH3BlfOGJ2H_Q&s',
-            alt: 'image 1',
-        },
-        {
-            src: 'https://t4.ftcdn.net/jpg/03/70/64/43/360_F_370644357_MDF4UXLAXTyyi2OyuK66tWW9cA2f8svL.jpg',
-            alt: 'image 2',
-        },
-        {
-            src: 'https://images.unsplash.com/photo-1518623489648-a173ef7824f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80',
-            alt: 'image 3',
-        },
-        {
-            src: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80',
-            alt: 'image 4',
-        },
-    ];
-
+    const { id } = useParams();
+    const apiUrl = import.meta.env.VITE_API_URL
     const slideHeight = '250px';
 
+    const [propertyData, setPropertyData] = useState([]);
+
+    const getPropertyById = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await PropertyServices.getPropertyById(id, token)
+            setPropertyData(res.data.data)
+        } catch (err) {
+            console.error("error by id", err);
+        }
+    }
+
+    useEffect(() => {
+        getPropertyById();
+    }, []);
+
     function viewImages() {
-        const imagesVideo = `${imagesVideos}/1`
-        navigate(imagesVideo)
+        const imagesVideo = `${imagesVideos}`
+        navigate(imagesVideo, {
+            state: {
+                id: propertyData?.id,
+                propertyImages: propertyData?.propertyImages
+            }
+        })
     }
 
     const items = [
@@ -56,20 +61,20 @@ function SingleProperty() {
                     <Card className="mt-6 sm:w-[60%] w-full">
                         <CardBody>
                             <Typography variant="h5" color="blue-gray" className="mb-2">
-                                Beach Front Villa
+                                {propertyData?.propertyName}
                             </Typography>
                             <Typography variant='h3' className='text-orange-500 mb-4'>
-                                13000/per-day
+                                {propertyData?.price}/per-day
                             </Typography>
                             <Typography variant='paragraph' className='font-bold mb-2'>
-                                <span className='text-black'>Rooms:</span>  4
+                                <span className='text-black'>Rooms:</span>  {propertyData?.rooms}
                             </Typography>
                             <Typography variant='paragraph' className='font-bold mb-2'>
-                                <span className='text-black'>Address:</span>  6, Nr Jalram Temple, Tribhuvan Terrace, Station Rd, Kandivli(w)
+                                <span className='text-black'>Address:</span>  {propertyData?.location}
                             </Typography>
                             <Typography variant='paragraph' className='font-bold text-black'>Description: </Typography>
                             <Typography variant='paragraph' className='font-bold'>
-                                Boasting accommodation with a private pool, garden view and a balcony, The Perfect Stays Mountain Paradise Villa is situated in Lonavala. Featuring a 24-hour front desk, this property also provides guests with an outdoor fireplace. The villa also features free WiFi, free private parking and facilities for disabled guests.
+                                {propertyData?.description}
                             </Typography>
                         </CardBody>
                     </Card>
@@ -94,7 +99,7 @@ function SingleProperty() {
                 </Typography>
                 <div className='flex justify-between mx-4 my-2'>
                     <Typography variant='paragraph' className='font-bold text-gray-700'>
-                        ₹13000
+                        ₹{propertyData?.price}
                         <span className='flex'>1 day price</span>
                     </Typography>
                     <Button size='lg' className='bg-teal-400'>
@@ -108,7 +113,7 @@ function SingleProperty() {
     return (
         <div className="max-w-6xl mx-auto p-4">
             <Breadcrumbs className='m-4'>
-                <a href="/property" className="opacity-60">
+                <Link to="/property" className="opacity-60">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4 inline-block mr-1 -mt-1"
@@ -117,7 +122,7 @@ function SingleProperty() {
                     >
                         <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v-2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                     </svg>
-                </a>
+                </Link>
                 <a className="opacity-60">
                     <span>Beach Front Villa</span>
                 </a>
@@ -150,7 +155,7 @@ function SingleProperty() {
                         }}
                         breakpoints={{
                             1024: {
-                                slidesPerView: images.length < 2 ? 1 : images.length < 3 ? 2 : 3,
+                                slidesPerView: propertyData?.propertyImages?.length < 2 ? 1 : propertyData?.propertyImages?.length < 3 ? 2 : 3,
                                 spaceBetween: 30,
                             },
                             768: {
@@ -163,13 +168,13 @@ function SingleProperty() {
                             },
                         }}
                     >
-                        {!images.length ? (
+                        {!propertyData?.propertyImages?.length ? (
                             <div>No Data Available</div>
                         ) : (
-                            images.map((img, i) => (
+                            propertyData?.propertyImages.map((img, i) => (
                                 <SwiperSlide key={i}>
                                     <img
-                                        src={img.src}
+                                        src={`${apiUrl}/${img}`}
                                         className="w-full h-[50%] object-cover rounded-sm"
                                         style={{ height: slideHeight }}
                                         alt={img.alt}

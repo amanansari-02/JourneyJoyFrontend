@@ -42,7 +42,8 @@ function PropertyForm() {
         formData.append(`propertyImages`, file);
       });
 
-      const res = await PropertyServices.addProperty(formData)
+      const token = localStorage.getItem('token')
+      const res = await PropertyServices.addProperty(formData, token)
       if (res?.data?.status == HttpStatusCode.Created) {
         navigate(`${adminDashboard}${property}`)
         showToast(TOAST_TYPE.SUCCESS, res.data.message)
@@ -102,10 +103,10 @@ function PropertyForm() {
                 >
                   <Option value="Hotel">Hotel</Option>
                   <Option value="Villa">Villa</Option>
-                  <Option value="Other">Other</Option>
+                  <Option value="Resort">Resort</Option>
                 </Select>
               )}
-            />
+            />  
             {errors?.propertyType && <span className='text-red-500'>{errors?.propertyType?.message}</span>}
           </div>
         </div>
@@ -286,8 +287,8 @@ function PropertyForm() {
           </ImageUploading>
           {errors?.propertyImages && <span className='text-red-500'>{errors?.propertyImages?.message}</span>}
         </div>
-        <div className='flex justify-end items-end mr-12' >
-          <Button type="submit" >Submit</Button>
+        <div className='flex justify-end items-end mr-12 ' >
+          <Button type="submit" className='bg-[#3A3A3A] hover:bg-[#242424]' >Submit</Button>
         </div>
       </form>
     </div>
