@@ -5,8 +5,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { imagesVideos } from '@/utils/route';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { bookingForm, imagesVideos } from '@/utils/route';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWifi, faCoffee, faUser, faSwimmingPool, faGamepad, faTv, faUtensils } from '@fortawesome/free-solid-svg-icons';
 import PropertyServices from '@/services/PropertyServices';
@@ -14,9 +14,11 @@ import PropertyServices from '@/services/PropertyServices';
 
 function SingleProperty() {
     const navigate = useNavigate();
+    const location = useLocation();
     const { id } = useParams();
     const apiUrl = import.meta.env.VITE_API_URL
     const slideHeight = '250px';
+    const locationName = location.state.from.pathname;
 
     const [propertyData, setPropertyData] = useState([]);
 
@@ -39,9 +41,14 @@ function SingleProperty() {
         navigate(imagesVideo, {
             state: {
                 id: propertyData?.id,
-                propertyImages: propertyData?.propertyImages
+                propertyImages: propertyData?.propertyImages,
+                from: locationName
             }
         })
+    }
+
+    const goToBookingPage = () => {
+        navigate(`${bookingForm}/${id}`)
     }
 
     const items = [
@@ -102,7 +109,7 @@ function SingleProperty() {
                         ₹{propertyData?.price}
                         <span className='flex'>1 day price</span>
                     </Typography>
-                    <Button size='lg' className='bg-teal-400'>
+                    <Button onClick={goToBookingPage} size='lg' className='bg-teal-400'>
                         Book Now
                     </Button>
                 </div>
@@ -113,7 +120,7 @@ function SingleProperty() {
     return (
         <div className="max-w-6xl mx-auto p-4">
             <Breadcrumbs className='m-4'>
-                <Link to="/property" className="opacity-60">
+                <Link to={locationName} className="opacity-60">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4 inline-block mr-1 -mt-1"
@@ -124,7 +131,7 @@ function SingleProperty() {
                     </svg>
                 </Link>
                 <a className="opacity-60">
-                    <span>Beach Front Villa</span>
+                    <span>{propertyData?.propertyName}</span>
                 </a>
             </Breadcrumbs>
             <div className="bg-gray-400 h-0.5 w-full mx-auto mb-4"></div>

@@ -14,6 +14,7 @@ import React from "@heroicons/react";
 import { Fragment } from "react";
 import PropertyView from "./property-view";
 import PropertyEditForm from "./property-edit-form";
+import Bookings from "./bookings";
 
 export function AdminDashboard() {
 
@@ -38,9 +39,9 @@ export function AdminDashboard() {
                 },
                 {
                     icon: <TableCellsIcon {...icon} />,
-                    name: "tables",
-                    path: "/tables",
-                    element: <Profile />,
+                    name: "booking",
+                    path: "/bookings",
+                    element: <Bookings />,
                 },
                 {
                     icon: <BuildingStorefrontIcon {...icon} />,
@@ -53,12 +54,12 @@ export function AdminDashboard() {
                     //     element: <PropertyForm />
                     // }
                 },
-                {
-                    icon: <InformationCircleIcon {...icon} />,
-                    name: "notifications",
-                    path: "/notifications",
-                    element: <Profile />,
-                }
+                // {
+                //     icon: <InformationCircleIcon {...icon} />,
+                //     name: "notifications",
+                //     path: "/notifications",
+                //     element: <Profile />,
+                // }
             ],
         }
     ];
@@ -106,6 +107,11 @@ export function AdminDashboard() {
                     name: "property-edit-form",
                     path: "/property-edit/:id",
                     element: <PropertyEditForm />
+                },
+                {
+                    name: "bookings",
+                    path: "/bookings",
+                    element: <Bookings />
                 }
             ],
         }

@@ -35,7 +35,7 @@ class PropertyServices {
     }
 
     static getLatestProperty(token) {
-        return axios.get(`${apiUrl}${AUTHORIZE_API_PATHS.PROPERTY}`,
+        return axios.get(`${apiUrl}${AUTHORIZE_API_PATHS.LATEST_PROPERTY}`,
             { headers: { 'Authorization': `Bearer ${token}` } }
         )
     }

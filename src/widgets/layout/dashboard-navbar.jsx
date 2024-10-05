@@ -1,4 +1,4 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import {
   Navbar,
   Typography,
@@ -8,23 +8,66 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Button,
 } from "@material-tailwind/react";
 import {
   Cog6ToothIcon,
-  ClockIcon,
-  CreditCardIcon,
   Bars3Icon,
 } from "@heroicons/react/24/solid";
 import {
   useMaterialTailwindController,
   setOpenSidenav,
 } from "@/context";
+import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
+import { removeItemToLocalStorage } from "@/utils/common-service";
+import { signIn } from "@/utils/route";
+import { useState } from "react";
+
+function ConfirmationPopup({ isOpen, onClose, onConfirm }) {
+  return (
+    <Dialog size="sm" open={isOpen} toggler={onClose}>
+      <DialogHeader toggler={onClose}>Confirm Logout</DialogHeader>
+      <DialogBody>
+        <p>Are you sure you want to log out?</p>
+      </DialogBody>
+      <DialogFooter>
+        <Button
+          variant="text"
+          color="red"
+          onClick={onClose}
+          className="mr-1"
+        >
+          <span>Cancel</span>
+        </Button>
+        <Button variant="gradient" color="green" onClick={onConfirm}>
+          <span>Confirm</span>
+        </Button>
+      </DialogFooter>
+    </Dialog>
+  );
+};
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const [logoutPopup, setLogoutPopup] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    removeItemToLocalStorage("user")
+    navigate(signIn)
+  }
+
+  const openLogoutPopup = () => {
+    setLogoutPopup(true);
+  };
+  const closeLogoutPopup = () => setLogoutPopup(false);
 
   return (
     <Navbar
@@ -82,9 +125,9 @@ export function DashboardNavbar() {
               </IconButton>
             </MenuHandler>
             <MenuList className="w-max border-0">
-              <MenuItem className="flex items-center gap-4">
+              <MenuItem className="flex items-center gap-4" onClick={openLogoutPopup}>
                 <div className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-tr from-blue-gray-800 to-blue-gray-900">
-                  <CreditCardIcon className="h-4 w-4 text-white" />
+                  <ArrowLeftOnRectangleIcon className="h-4 w-4 text-white" />
                 </div>
                 <div>
                   <Typography
@@ -92,20 +135,20 @@ export function DashboardNavbar() {
                     color="blue-gray"
                     className="mb-1 font-normal"
                   >
-                    Payment successfully completed
-                  </Typography>
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="flex items-center gap-1 text-xs font-normal opacity-60"
-                  >
-                    <ClockIcon className="h-3.5 w-3.5" /> 2 days ago
+                    Logout
                   </Typography>
                 </div>
               </MenuItem>
             </MenuList>
           </Menu>
-
+          <ConfirmationPopup
+            isOpen={logoutPopup}
+            onClose={closeLogoutPopup}
+            onConfirm={() => {
+              handleLogout();
+              closeLogoutPopup();
+            }}
+          />
         </div>
       </div>
     </Navbar>

@@ -45,6 +45,7 @@ export function SignIn() {
         const data = JSON.stringify(res.data.data)
         if (res.data.status == HttpStatusCode.Ok) {
           setItemToLocalStorage('user', data)
+          setItemToLocalStorage('token', res.data.token)
           navigate(dashboard)
           showToast(TOAST_TYPE.SUCCESS, res.data.message)
         }
@@ -74,7 +75,7 @@ export function SignIn() {
 
       const res = await AuthServices.userLogin(formData);
       const userData = JSON.stringify(res.data.data)
-      const status = res.data.status
+      const status = res.data.status      
 
       if (status == HttpStatusCode.Ok) {
         const role = res.data.data.role

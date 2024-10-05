@@ -18,7 +18,11 @@ function Property() {
 
     const SendSingleProperty = (id) => {
         const singleprop = `${property}/${id}`
-        navigate(singleprop)
+        navigate(singleprop, {
+            state: {
+                from: location
+            }
+        })
     }
 
     // api by search

@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Lightbox from 'react-18-image-lightbox';
 import 'react-18-image-lightbox/style.css';
@@ -8,6 +8,11 @@ const ImagesVideos = () => {
     const location = useLocation();
     const propertyImages = location.state?.propertyImages;
     const propertyId = location.state?.id;
+    const from = location.state?.from;
+    const pathname = {
+        pathname: from
+    }
+
 
     const apiUrl = import.meta.env.VITE_API_URL
     const allImg = propertyImages.map((img) => apiUrl + '/' + img)
@@ -22,6 +27,7 @@ const ImagesVideos = () => {
         window['global'] = window;
     }, []);
 
+
     return (
         <>
             <Breadcrumbs className='m-4'>
@@ -35,49 +41,51 @@ const ImagesVideos = () => {
                         <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v-2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                     </svg>
                 </Link>
-                <Link to={`/property/${propertyId}`} className="opacity-60">
+                <Link to={`/property/${propertyId}`}
+                    state={{ from: pathname }} className="opacity-60">
                     <span>Beach Front Villa</span>
                 </Link>
                 <div href="#" className="opacity-60">
                     <span>Images & Videos</span>
                 </div>
-            </Breadcrumbs>
-            {isLoading ? (
-                <div>Loading...</div>
-            ) : (
-                <div className='m-4'>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mt-10">
-                        {Array.isArray(images) &&
-                            images.map((item, index) => {
-                                return (
-                                    <button
-                                        type="button"
-                                        key={index}
-                                        className={`${index === 0 ? 'md:row-span-2 md:col-span-2' : ''}`}
-                                        onClick={() => {
-                                            setPhotoIndex(index);
-                                        }}
-                                    >
-                                        <img src={`${item}`} alt={item.alt} data-fancybox="gallery" className="rounded-md w-full h-full object-cover" />
-                                    </button>
-                                );
-                            })}
-                    </div>
+            </Breadcrumbs >
+            {
+                isLoading ? (
+                    <div> Loading...</div >
+                ) : (
+                    <div className='m-4'>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mt-10">
+                            {Array.isArray(images) &&
+                                images.map((item, index) => {
+                                    return (
+                                        <button
+                                            type="button"
+                                            key={index}
+                                            className={`${index === 0 ? 'md:row-span-2 md:col-span-2' : ''}`}
+                                            onClick={() => {
+                                                setPhotoIndex(index);
+                                            }}
+                                        >
+                                            <img src={`${item}`} alt={item.alt} data-fancybox="gallery" className="rounded-md w-full h-full object-cover" />
+                                        </button>
+                                    );
+                                })}
+                        </div>
 
-                    {isOpen && (
-                        <Lightbox
-                            mainSrc={images[photoIndex]}
-                            nextSrc={images[(photoIndex + 1) % images.length]}
-                            prevSrc={images[(photoIndex + images.length - 1) % images.length]}
-                            onCloseRequest={() => setIsOpen(false)}
-                            onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % images.length)}
-                            onMovePrevRequest={() => setPhotoIndex((photoIndex + images.length - 1) % images.length)}
-                            animationDuration={300}
-                            keyRepeatLimit={180}
-                        />
-                    )}
-                </div>
-            )}
+                        {isOpen && (
+                            <Lightbox
+                                mainSrc={images[photoIndex]}
+                                nextSrc={images[(photoIndex + 1) % images.length]}
+                                prevSrc={images[(photoIndex + images.length - 1) % images.length]}
+                                onCloseRequest={() => setIsOpen(false)}
+                                onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % images.length)}
+                                onMovePrevRequest={() => setPhotoIndex((photoIndex + images.length - 1) % images.length)}
+                                animationDuration={300}
+                                keyRepeatLimit={180}
+                            />
+                        )}
+                    </div>
+                )}
 
             {/* Uncomment and use below code if you want to display videos */}
             {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mt-10">

@@ -3,7 +3,7 @@ import { Navbar } from '.';
 import { Button, Card, CardBody, Input, Option, Select, Typography, Dialog, DialogHeader, DialogFooter, DialogBody }
     from '@material-tailwind/react';
 import { Home } from '@/pages';
-import { booking, dashboard, profile, property, signIn } from '@/utils/route';
+import { booking, bookingPage, dashboard, profile, property, signIn } from '@/utils/route';
 import { useNavigate } from 'react-router-dom';
 import { DASHBOARD_TEXT_CONTENT } from '@/utils/text-content';
 import { removeItemToLocalStorage } from '@/utils/common-service';
@@ -58,7 +58,7 @@ function DashboardHeader({ locationVal, priceVal }) {
         {
             name: "Booking",
             value: `${booking}`,
-            path: `${booking}`
+            path: `${bookingPage}`
         },
         {
             name: "Profile",

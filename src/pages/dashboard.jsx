@@ -4,11 +4,19 @@ import { Card, CardBody, Typography, Avatar } from "@material-tailwind/react";
 import DashboardHeader from "@/widgets/layout/dashboardHeader";
 import { USER_DASHBOARD } from "@/utils/text-content";
 import PropertyServices from "@/services/PropertyServices";
+import { useLocation, useNavigate } from "react-router-dom";
+import { property } from "@/utils/route";
 
 const apiUrl = import.meta.env.VITE_API_URL
 
-
 function HotelCard({ id, propertyImages, propertyName, city, price }) {
+
+    const navigate = useNavigate(); 
+    const location = useLocation();
+    const navigateTo = (id) => {
+        navigate(`${property}/${id}`, { state: { from: location } })
+    }
+
     return (
         <Card className="rounded-lg bg-[#FAFAFA]" shadow={false}>
             <CardBody className="text-center flex justify-start">
@@ -50,7 +58,7 @@ function HotelCard({ id, propertyImages, propertyName, city, price }) {
                         <div className="flex-grow"></div>
                         <button
                             className="px-3 py-1 bg-blue-400 text-white rounded-md ml-4"
-                            // onClick={navigateTo}
+                            onClick={() => navigateTo(id)}
                         >
                             Details
                         </button>
@@ -71,6 +79,8 @@ function Dashboard() {
         try {
             const token = localStorage.getItem('token')
             const res = await PropertyServices.getLatestProperty(token)
+            console.log("res", res);
+
             setPropertyData(res.data.data)
 
         } catch (err) {
